@@ -383,6 +383,8 @@ Template.ProductosDeLaTienda.onCreated( () => {
     	template.subscribe( 'categorias' );
     	template.subscribe( 'fotos' );
   	});
+
+    Session.set('pid', '');
 });
 
 
@@ -621,6 +623,51 @@ Template.ProductosDeLaTienda.events({
   				}
   			});
   		}
+  },
+  'click .d': function () {
+    Session.set('pid', this.metadata.productoId);
+    console.log(Session.get('pid'));
+    Modal.show('detalleProducto');
+  }
+});
+
+Template.detalleProducto.helpers({
+  producto: function () {
+    return Productos.findOne({_id: Session.get('pid')});
+  },
+  fotos: function () {
+    return FotosProducto.find({'metadata.productoId': Session.get('pid')})
+  }
+});
+
+Template.detalleProducto.events({
+  'click .c': function (e, t) {
+      let id = this._id;
+
+      let cantidad = t.find('[name=' + id + ']').value;
+      
+
+      let datos = {
+        cantidad: cantidad,
+        productoId: id,
+        producto: this.descripcion,
+        precio: this.precio,
+        nombre: this.nombre
+      }
+
+      console.log(datos);
+
+      if (cantidad !== 0) {
+
+        Meteor.call('agregarAlCarrito', datos, function (err) {
+          if (err) {
+            console.log(err);
+          } else {
+            t.find('[name=' + id + ']').value = 1;
+            Modal.hide('detalleProducto');
+          }
+        });
+      }
   }
 });
 

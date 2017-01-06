@@ -59,9 +59,20 @@
 	border-radius: 70%;
 	font-size: 24px;
 	padding: 9px;
-    background: #f1c40f;
+    background: #e67e22;
 	text-align: center;
 
+}
+
+.des {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 20px;
+}
+
+.col-1 {
+	width: 40%;
+	margin: 20px auto;
 }
 
 #boton-c:hover {

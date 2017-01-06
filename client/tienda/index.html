@@ -33,12 +33,55 @@
 		<div class="row">
 			{{>ProductosDeLaTienda}}
 		</div>
-		<!--<div class="row">
-			{{>Novedades}}		
-		</div> -->
 	</div>
 </template>
 
+<template name="detalleProducto">
+   <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Detalle de Producto</h4>
+                </div>
+
+                <div class="modal-body">
+                    {{#with producto}}
+                      
+                      <div class="des">
+                        <div class="col-1">
+                          {{#each fotos}}
+                          <img src="{{this.url}}">
+
+                          {{/each}}
+                        </div>
+                        <div class="col-1">
+                          <h4>{{this.nombre}}</h4>
+                          <p>{{this.descripcion}}</p>
+                          <p>S/. {{this.precio}}</p>
+                          <p>
+                            <div class="input-group">
+                              <input type="text" name="{{this._id}}" class="form-control input-number" value="1" min="1" max="100000">
+                            </div>
+                          </p>
+                          <p>
+                            <button id="boton-c" style="width: 195px;" type="button" class="btn btn-primary btn-block agregar-carrito c">Agregar al carrito</button>
+                          </p>
+                        </div>
+
+                      </div>
+
+                    {{/with}}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>
 <!--<template name="ProductosDeLaTienda">
 	<div class="page-header clearfix">
     	<div>
@@ -127,7 +170,7 @@
                                         
                                             <div class="producto">
                                                 {{#each fotosproducto this._id}}
-                                                    <img src="{{this.url}}" alt="" class="fotoProducto"/>
+                                                    <img src="{{this.url}}" alt="" class="fotoProducto d"/>
                                                 {{/each}}
                                                 <p>{{nombre}}</p>
                                                 <p>{{descripcion}}</p>
