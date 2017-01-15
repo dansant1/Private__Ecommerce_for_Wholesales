@@ -1,3 +1,5 @@
+//import zoom from 'jquery-zoom';
+
 Template.carrito.onCreated( () => {
 	let template = Template.instance();
 
@@ -67,7 +69,7 @@ Template.pedido.helpers({
 		return igv.toFixed(1);
 	},
 	supertotal: function () {
-		let carrito = Carrito.find({ordenado: false, userId: Meteor.userId()});
+		  let carrito = Carrito.find({ordenado: false, userId: Meteor.userId()});
   		let total = 0;
   		carrito.forEach(function (e) {
   			let t = e.precio * e.cantidad;
@@ -119,14 +121,28 @@ Template.pedido.events({
 			comentario: t.find("[name='comentario']").value
 		}
 
-		Meteor.call('ordenar', datos, function (err) {
-			if (err) {
-				console.log(err);
-			} else {
-				alert('Tu pedido ha sido enviado');
-				FlowRouter.go('/')
-			}
-		});
+    if ( $('input.pago:checked').length > 0 ) {
+      Meteor.call('ordenar', datos, function (err) {
+        if (err) {
+          console.log(err);
+        } else {
+          swal(
+            '!Listo!',
+            'Tu pedido ha sido enviado',
+            'success'
+            )
+          FlowRouter.go('/')
+        }
+      });  
+    } else {
+      swal(
+        'Oops...',
+        'Tienes que seleccionar un método de pago',
+        'error'
+        )
+    }
+
+		
 	}
 });
 
@@ -295,17 +311,25 @@ Template.carrito.helpers({
 	},
 	fotosproducto(productoId) {
   		return FotosProducto.find({'metadata.productoId': productoId});
-  	},
-  	superTotal: function () {
-  		let carrito = Carrito.find();
+  },
+  superTotal: function () {
+      let carrito = Carrito.find({ordenado: false, userId: Meteor.userId()});
+      let total = 0;
+      carrito.forEach(function (e) {
+        let t = e.precio * e.cantidad;
+        total = total + t;
+      });
+
+      return total;
+  		/*let carrito = Carrito.find();
   		let total = 0;
   		carrito.forEach(function (e) {
   			let t = e.precio * e.cantidad;
   			total = total + t;
   		});
 
-  		return total;
-  	}
+  		return total;*/
+  }
 });
 
 
@@ -409,14 +433,14 @@ Template.ProductosDeLaTienda.helpers({
       ]
     };
 
-    productos = Productos.find({categoriaId: categoriaId}, query);
+    productos = Productos.find({categoriaId: categoriaId}, { sort: {nombre: 1} }, query);
  
     if (query) {
         if ( productos ) {
           return productos;
         }
     } else {
-      	return Productos.find({categoriaId: categoriaId});
+      	return Productos.find({categoriaId: categoriaId}, { sort: {nombre: 1} });
     }
     
   },
@@ -490,7 +514,26 @@ Template.carrito.events({
 		});
 	},
 	'click .ordenar': function () {
-		Modal.hide('carrito');
+
+    let carrito = Carrito.find({ordenado: false, userId: Meteor.userId()});
+    let total = 0;
+      carrito.forEach(function (e) {
+        let t = e.precio * e.cantidad;
+        total = total + t;
+      });
+
+    if (total === 0) {
+      Modal.hide('carrito');
+      swal(
+        'Oops...',
+        'Tu carrito está vacío',
+        'error'
+      )
+    } else {
+      Modal.hide('carrito');
+      FlowRouter.go('/pedido');  
+    }
+		
 	}
 });
 
@@ -619,6 +662,7 @@ Template.ProductosDeLaTienda.events({
   				if (err) {
   					console.log(err);
   				} else {
+            //$('#cart').addClass('animated bounceOutLeft');
   					t.find('[name=' + id + ']').value = 1;
   				}
   			});
@@ -638,6 +682,16 @@ Template.detalleProducto.helpers({
   fotos: function () {
     return FotosProducto.find({'metadata.productoId': Session.get('pid')})
   }
+});
+
+Template.carrito.events({
+  'click .cc': function () {
+    Modal.hide('carrito');
+  }
+});
+
+Template.detalleProducto.onRendered(function () {
+
 });
 
 Template.detalleProducto.events({
@@ -668,6 +722,11 @@ Template.detalleProducto.events({
           }
         });
       }
+  },
+  'hover #photo': function () {
+    /*$('#photo').zoom();
+    console.log('hola')*/
+    //console.log(this.url);
   }
 });
 

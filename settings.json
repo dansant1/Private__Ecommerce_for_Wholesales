@@ -1,0 +1,10 @@
+{
+	"galaxy.meteor.com":
+		{
+			"env":
+				{
+        	"ROOT_URL": "http://dexcim.links.com.pe",
+					"MONGO_URL": "mongodb://admin:admin@ds141088.mlab.com:41088/integrate"
+				}
+		}
+}
