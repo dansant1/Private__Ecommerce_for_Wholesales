@@ -127,8 +127,8 @@ Template.pedido.events({
           console.log(err);
         } else {
           swal(
-            '!Listo!',
-            'Tu pedido ha sido enviado',
+            '¡Listo!',
+            'Su pedido ha sido enviado',
             'success'
             )
           FlowRouter.go('/')
@@ -690,9 +690,6 @@ Template.carrito.events({
   }
 });
 
-Template.detalleProducto.onRendered(function () {
-
-});
 
 Template.detalleProducto.events({
   'click .c': function (e, t) {

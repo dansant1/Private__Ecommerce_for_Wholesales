@@ -51,7 +51,7 @@
                       <div class="des">
                         <div class="col-1">
                           {{#each fotos}}
-                          <img src="{{this.url}}" id="photo" style="max-width: 200px; max-height: 200px;">
+                          <img src="{{this.url}}" id="photo" style="max-width: 200px; max-height: 200px; display: block; margin: 5px auto;">
 
                           {{/each}}
                         </div>
@@ -168,23 +168,6 @@
                 {{#each categorias}}
                 <div id="{{this._id}}" class="tab-pane fade ">
                     <h3>{{this.nombre}}</h3>
-                    <!--<div class="dropdown" style="display: inline-block; margin-top: 10px;">
-                      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-filter" aria-hidden="true"></i> Orden Alfabetico
-                      <span class="caret"></span></button>
-                      <ul class="dropdown-menu">
-                        <li><a href="#">A - Z</a></li>
-                        <li><a href="#">Z - A</a></li>
-                      </ul>
-                    </div>
-
-                    <div class="dropdown" style="display: inline-block; margin-left: 10px;">
-                      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-filter" aria-hidden="true"></i> Orden por Precio
-                      <span class="caret"></span></button>
-                      <ul class="dropdown-menu">
-                        <li><a href="#">Mayor a Menor</a></li>
-                        <li><a href="#">Menor a Mayor</a></li>
-                      </ul>
-                    </div> -->
 
                     <div class="flexible-categoria" >
                         
@@ -192,7 +175,7 @@
                         
                         <div class="producto">
                             {{#each fotosproducto this._id}}
-                                <img src="{{this.url}}" alt="" class="fotoProducto"/>
+                                <img src="{{this.url}}" alt="" class="fotoProducto d"/>
                             {{/each}}
                                 <p>{{nombre}}</p>
                                 <p class="dest">{{descripcion}}</p>
@@ -228,10 +211,10 @@
                 N
             </span>
         	{{#each fotosproducto this._id}}
-				<img src="{{this.url}}" alt="" class="fotoProducto"/>
+				<img src="{{this.url}}" alt="" class="fotoProducto d"/>
         	{{/each}}
           	<p>{{nombre}}</p>
-          	<p>{{descripcion}}</p>
+          	<p class="dest">{{descripcion}}</p>
           	<p>S/. {{precio}}</p>
           	<p>
           		<div class="input-group">
@@ -301,8 +284,9 @@
                     </tr>
                    {{/each}}
                 </tbody>
-               	<div>
-               		 <strong>Total S/. {{superTotal}}</strong>
+               	<div style="width: 100%;">
+                  Total
+               		 <strong style="position: relative; left: 554px;"> S/. {{superTotal}}</strong>
                	</div>
                 <tfoot>
                     
@@ -407,7 +391,7 @@
   					 <table class="table">
     				<tbody>
       					<tr>
-        					<td style="width: 168px;">Subtotal sin IGV</td>
+        					<td style="width: 240px;">Subtotal sin IGV</td>
       						<td>S/ {{sinIGV}}</td>
       					</tr>
 
@@ -656,13 +640,13 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                    	<li>
+                    	<li style="position: relative; top: 4px">
                       {{#each foto}}
                        <img src="{{this.url}}" alt="" style="margin-left: 15px;" class="fotoAsesor"/>
                       {{/each}}
                       
                       </li>
-                      <li>
+                      <li style="position: relative; top: 6px">
                     		<a style="color: white; padding-top: 0px;"> 
 								          <p style="font-size: 13px; margin-bottom: 0;">Asesor: {{vendedor}} </p>
 								          <p style="font-size: 13px; margin-bottom: 0;">Tel: {{telefono}} </p>
@@ -716,9 +700,11 @@
                     </tr>
                    {{/each}}
                 </tbody>
-               
-                <div>
-                     <strong>Total S/. {{superTotal}}</strong>
+                 <hr style="width: 100%;">
+                <div style="width: 100%">
+                          
+                    Total
+                     <strong style="position: relative; left: 1040px;"> S/. {{superTotal}}</strong>
                 </div>
             </table>
         

@@ -8,13 +8,19 @@ Template.loginAdmin.events({
 			password: t.find('[name="password"]').value
 		}
 
-		Meteor.loginWithPassword(datos.email, datos.password, function (err) {
-			if (err) {
-				console.log('No esta registrado');
-			} else {
-				console.log('Bienvenido');
-			}
-		});
+		if (datos.email !== "" && datos.password !== "") {
+			Meteor.loginWithPassword(datos.email, datos.password, function (err) {
+				if (err) {
+					alert('No esta registrado');
+				} else {
+					console.log('Bienvenido');
+				}
+			});	
+		} else {
+			alert('Complete los datos');
+		}
+
+		
 
 	}
 });
