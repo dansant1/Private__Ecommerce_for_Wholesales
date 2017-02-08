@@ -41,6 +41,33 @@ Meteor.methods({
 		}
 
 	},
+  ToggleNovedad: function (id) {
+
+    if ( Productos.findOne({_id: id}).novedad === true ) {
+      Productos.update({_id: id}, {
+        $set: {
+          novedad: false
+        }
+      });  
+    } else {
+      Productos.update({_id: id}, {
+        $set: {
+          novedad: true
+        }
+      });
+    }
+
+    
+  },
+  EditarProducto: function (datos) {
+    Productos.update({_id: datos.id}, {
+      $set: {
+        nombre: datos.nombre,
+        descripcion: datos.descripcion,
+        precio: datos.precio
+      }
+    });
+  },
   crearProducto: function (datos) {
     
     if (this.userId) {
@@ -130,5 +157,66 @@ Meteor.methods({
   },
   eliminarBanner: function (id) {
     Banners.remove({_id: id})
-  } 
+  },
+  setColor1: function (color) {
+    if (Colores.find().fetch().length > 0 ) {
+      Colores.update({_id: Colores.find().fetch()[0]._id}, {
+        $set: {
+          color1: color
+        }
+      });  
+    } else {
+      Colores.insert({
+        color1: color
+      });
+    }
+  },
+  setColor2: function (color) {
+    if (Colores.find().fetch().length > 0 ) {
+      Colores.update({_id: Colores.find().fetch()[0]._id}, {
+        $set: {
+          color2: color
+        }
+      });  
+    } else {
+      Colores.insert({
+        color2: color
+      });
+      console.log('gu');
+    }
+  },
+  setFooter: function (telefono, email, direccion) {
+    if (Contenido.find().fetch().length > 0) {
+      Contenido.update({_id: Contenido.find().fetch()[0]._id}, {
+        $set: {
+          telefono: telefono,
+          email: email,
+          direccion: direccion
+        }
+      });
+    } else {
+      Contenido.insert({
+        telefono: telefono,
+        direccion: direccion,
+        email: email,
+        createdAt: new Date()
+      });
+    }
+  },
+  agregarSeccion: function (titulo, contenido) {
+    Secciones.insert({
+      titulo: titulo,
+      contenido: contenido,
+      createdAt: new Date()
+    });
+  },
+  editarSeccion: function (titulo, contenido, id) {
+    Secciones.update({_id: id}, {
+      titulo: titulo,
+      contenido: contenido
+    });
+  },
+  eliminarSeccion: function (id) {
+    Secciones.remove({_id: id});
+  }
 });

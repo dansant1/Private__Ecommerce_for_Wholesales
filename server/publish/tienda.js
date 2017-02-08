@@ -51,12 +51,9 @@ Meteor.publish('novedades', function () {
 });
 
 Meteor.publish('banners', function () {
-    if (this.userId) {
+   
       return Banners.find();
-    } else {
-      this.stop();
-      return;
-    }
+    
 });
 
 Meteor.publish('vendedores', function () {
@@ -66,4 +63,28 @@ Meteor.publish('vendedores', function () {
       this.stop();
       return;
     }
+});
+
+Meteor.publish('Logos1', function () {
+    console.log('hola');
+    return Logos1.find();
+    
+});
+
+Meteor.publish('Logos2', function () {
+    
+    return Logos2.find();
+    
+});
+
+Meteor.publish('Colores', function () {
+    
+    return Colores.find();
+    
+});
+
+Meteor.publish('Secciones', function () {
+    console.log('holasss');
+    return Secciones.find();
+    
 });

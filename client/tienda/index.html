@@ -9,12 +9,19 @@
 </template>
 
 <template name="menu">
-	<nav class="navbar navbar-default  navbar-fixed-top">
+	<nav class="navbar navbar-default  navbar-fixed-top" style="background-color: {{colorone}}">
       <div class="container">
         <div class="navbar-header">
           
           <a class="navbar-brand" style="color: white; padding-top: 26px;" href="#">
-           <img src="/logo.png" style="width: 160px; height: 30px; margin-top: -4px">
+          {{#each logo1}}
+           <img src="{{this.url}}" style="width: 138px; height: 30px; margin-top: -4px">
+          {{/each}}
+          </a>
+          <a class="navbar-brand" style="color: white; padding-top: 26px;" href="#">
+          {{#each logo2}}
+           <img src="{{this.url}}" style="width: 140px; height: 95px; margin-top: -38px; position: relative; right: 6px; left: 821px">
+          {{/each}}
           </a>
         </div>
         
@@ -93,9 +100,9 @@
         </div>
         <div class="row">
             <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#menu1">Todos</a></li>
+                <li class="active"><a data-toggle="tab" href="#menu1" style="color: {{color}}">Todos</a></li>
                 {{#each categorias}}
-                <li><a data-toggle="tab" href="#{{this._id}}">{{this.nombre}}</a></li>
+                <li><a data-toggle="tab" href="#{{this._id}}" style="color: {{color}}">{{this.nombre}}</a></li>
                 {{/each}}
             </ul>
 
@@ -126,7 +133,7 @@
                                                 </div>
                                                 </p>
                                                 <p>
-                                                <button id="boton-c" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar al carrito</button>
+                                                <button id="boton-c" style="background-color: {{color}}" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar al carrito</button>
                                                 </p>
                                             </div>
                                        
@@ -153,7 +160,7 @@
                                                 </div>
                                                 </p>
                                                 <p>
-                                                <button id="boton-c" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar al carrito</button>
+                                                <button id="boton-c" style="background-color: {{color}}" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar al carrito</button>
                                                 </p>
                                             </div>
                                        
@@ -186,7 +193,7 @@
                                 </div>
                                 </p>
                                 <p>
-                                <button id="boton-c" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar al carrito</button>
+                                <button id="boton-c" type="button" class="btn btn-primary btn-block agregar-carrito" style="background-color: {{color}}">Agregar al carrito</button>
                                 </p>
                         </div>             
                         {{/each}}
@@ -224,7 +231,7 @@
       			</div>
           	</p>
           	<p>
-          		<button id="boton-c" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar al carrito</button>
+          		<button id="boton-c" style="background-color: {{color}}" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar al carrito</button>
           	</p>
         </div>
       
@@ -255,7 +262,7 @@
                     <tr>
                         <th>Producto</th>
                         <th>Cantidad</th>
-                        <th style="width: 100%; text-align: center;" class="text-center">Precio Unitario (Inc. IGV)</th>
+                        <th style="width: 26%; text-align: center;" class="text-center">Precio Unitario (Inc. IGV)</th>
                         <th class="text-center">Total</th>
                         <th> </th>
                     </tr>
@@ -263,6 +270,7 @@
                 <tbody>
                 {{#each productos}}
                     <tr>
+
                         <td class="col-sm-8 col-md-6">
                         <div class="media">
                             <div class="media-body">
@@ -272,8 +280,8 @@
                         <td class="col-sm-1 col-md-1" style="text-align: center">
                        		<strong>{{this.cantidad}}</strong>
                         </td>
-                        <td class="col-sm-1 col-md-3 text-center"><strong>S/. {{this.precio}}</strong></td>
-                        <td class="col-sm-1 col-md-1 text-center"><strong>S/. {{total}}</strong></td>
+                        <td class="col-sm-1 col-md-1 text-center"><strong>S/. {{price}}</strong></td>
+                        <td class="col-sm-1 col-md-2 text-center"><strong>S/. {{tot}}</strong></td>
                        
                         <td class="col-sm-1 col-md-1">
 
@@ -284,35 +292,36 @@
                     </tr>
                    {{/each}}
                 </tbody>
-               	<div style="width: 100%;">
-                  Total
-               		 <strong style="position: relative; left: 554px;"> S/. {{superTotal}}</strong>
-               	</div>
+               	
                 <tfoot>
-                    
-                    <tr>
-                        <td>   </td>
-                        <td>   </td>
-                        <td> 
-				
-						
-                        </td>
-                        <td>
-                        <a href="/" class="btn btn-default cc">
-                            <span class="glyphicon glyphicon-shopping-cart"></span> Continuar Comprando
-                        </a></td>
-                        <td>
-                        <a href="#" class="btn btn-success ordenar">
-                            Realizar orden <span class="glyphicon glyphicon-play"></span>
-                        </a></td>
-                    </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td></td>
+                    <td style="padding-left: 5px"></td>
+                    <td style="padding: 0; text-align: center;">
+                        S/. {{superTotal}}
+                    </td>
+                    <td></td>
+                  </tr>
                 </tfoot>
+                
             </table>
-        
-    
-
+            
+                              
+              <div class="page-header clearfix">
+               
+                <div class="pull-right">
+                  <a href="/" class="btn btn-default cc">
+                      <span class="glyphicon glyphicon-shopping-cart"></span> Continuar Comprando
+                  </a>
+                  <a href="#" class="btn btn-success ordenar">
+                            Realizar orden <span class="glyphicon glyphicon-play"></span>
+                        </a>
                 </div>
-
+                </div>
+    
+                </div>
+      
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
@@ -336,15 +345,15 @@
                 {{#with cliente}}
                     <form>
                       <div class="form-group">
-                        <label for="nombre">Nombre</label>
+                        <label for="nombre">Razón Social</label>
                         <input type="text" class="form-control"  name="nombre" id="nombre" value="{{this.nombre}}">
                       </div>
                       <div class="form-group">
-                        <label for="dc">Dirección de cobranza</label>
+                        <label for="dc">Dirección de Cobranza</label>
                         <input type="text" class="form-control" name="dc" id="dc" value="{{this.direccionCobranza}}">
                       </div>
                       <div class="form-group">
-                        <label for="de">Dirección de envío</label>
+                        <label for="de">Dirección de Envío</label>
                         <input type="text" class="form-control" name="de" id="de" value="{{this.direccionEnvio}}">
                       </div>  
                       <button type="submit" class="btn btn-default">Guardar</button>
@@ -369,18 +378,18 @@
 					 <table class="table">
     					<thead>
       						<tr>
-        						<th>Producto</th>
-        						<th>Cantidad</th>
-        						<th>Precio Unit. (Inc. IGV)</th>
+        						<th style="text-align: center;">Producto</th>
+        						<th style="text-align: center;">Cantidad</th>
+        						<th style="text-align: center;">Precio Unitario</th>
       						</tr>
     				</thead>
     				<tbody>
       					{{#each carrito}}
 
       					<tr>
-          					<td> {{this.producto}} </td>
-        					<td> {{this.cantidad}} </td>
-        					<td>S/ {{this.precio}} </td>
+          				<td style="width: 50px"> {{this.producto}} </td>
+        					<td style="text-align: center;"> {{this.cantidad}} </td>
+        					<td style="text-align: center;">S/. {{numero this.precio}} </td>
       					</tr>
 
       					{{/each}}
@@ -390,20 +399,24 @@
 
   					 <table class="table">
     				<tbody>
+                <tr>
+                  <h2 style="font-weight: bold; font-size: 15px; width: 80%; margin-left: 70px; margin-top: 15px; text-align: center;">Resumen</h2>
+                  
+                </tr>
       					<tr>
         					<td style="width: 240px;">Subtotal sin IGV</td>
-      						<td>S/ {{sinIGV}}</td>
+      						<td>S/. {{sinIGV}}</td>
       					</tr>
 
       					<tr>
         					
         					
         					<td>IGV (18%)</td>
-        					<td>S/ {{igv}}</td>
+        					<td>S/. {{igv}}</td>
       					</tr>
       					<tr>
-        					<td>Total</td>
-        					<td> S/ {{supertotal}} </td>
+        					<td>Total con IGV</td>
+        					<td> S/. {{supertotal}} </td>
       					</tr>
      
     				</tbody>
@@ -539,7 +552,7 @@
         	<td> {{fecha}} </td>
         	<td> {{this.status}} </td>
           <td> {{this.condicionPago}} </td>
-        	<td>S/ {{this.total}} </td>
+        	<td>S/. {{tot}} </td>
         	<td> <button type="button" class="btn btn-primary ver">Ver</button> </td>
       	</tr>
       	{{/each}}
@@ -552,7 +565,7 @@
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-12">
-						<h4>información de contacto</h4>
+						<h4>Información de Contacto</h4>
 						<p>{{currentUser.profile.nombre}}</p>
 						<p> {{email}} </p>
 						<p> <button type="button" class="btn btn-primary editar">Editar cuenta</button></p>
@@ -563,11 +576,11 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<h4>Dirección de cobranza</h4>
+						<h4>Dirección de Cobranza</h4>
 						<p> {{cobranza}} </p>
 					</div>
 					<div class="col-md-6">	
-						<h4>Dirección de envio</h4>
+						<h4>Dirección de Envio</h4>
 						<p>{{envio}}</p>
 					</div>
 				</div>
@@ -613,7 +626,7 @@
 </template>
 
 <template name="menuTienda">
-    <nav class="navbar navbar-default  navbar-fixed-top">
+    <nav class="navbar navbar-default  navbar-fixed-top" style="background-color: {{color}}">
           <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -626,7 +639,7 @@
                        <img src="/logo.png" style="width: 160px; height: 35px; margin-top: -6px;">
                     </a>
                 </div>
-                <div id="navbar" class="navbar-collapse collapse">
+                <div id="navbar" class="navbar-collapse collapse" style="background-color: {{color}}">
                 	 <ul class="nav navbar-nav">
                     	<li>
                     		<a style="color: white;">
@@ -646,15 +659,15 @@
                       {{/each}}
                       
                       </li>
-                      <li style="position: relative; top: 6px">
+                      <li style="position: relative; top: 6px" id="curso">
                     		<a style="color: white; padding-top: 0px;"> 
 								          <p style="font-size: 13px; margin-bottom: 0;">Asesor: {{vendedor}} </p>
 								          <p style="font-size: 13px; margin-bottom: 0;">Tel: {{telefono}} </p>
                     			<p style="font-size: 13px; margin-bottom: 0;"> {{emailVendedor}} </p>
                     		</a>
                     	</li>
-                    	<li class="carritos" id="cart"><a style="color: white; font-size: 24px">
-                    		{{productos}} <i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
+                    	<li class="carritos" id="cart"><a style="font-size: 24px" class="blanco">
+                    		{{productos}} <i class="fa fa-shopping-cart blanco"  aria-hidden="true"></i></a></li>
                         <li class="salir"><a style="color: white">Cerrar Sesión</a></li>
                     </ul>
                 </div>
@@ -688,23 +701,24 @@
                 
                 <tbody>
                 {{#each this.ordenes}}
-                    <tr>
+                    <tr style="border-bottom: 1px solid #ddd;">
                         <td>{{producto}}</td>
                         <td class="col-sm-1 col-md-1" style="text-align: center">
                             <strong>{{cantidad}}</strong>
                         </td>
-                        <td class="col-sm-1 col-md-3 text-center"><strong>S/. {{this.precio}}</strong></td>
+                        <td class="col-sm-1 col-md-3 text-center"><strong>S/. {{price}}</strong></td>
                         <td class="col-sm-1 col-md-1 text-center"><strong>S/. {{total}}</strong></td>
                        
                         
                     </tr>
                    {{/each}}
+                   <hr>
                 </tbody>
-                 <hr style="width: 100%;">
-                <div style="width: 100%">
+                
+                <div style="width: 100%; padding-left: 7px; margin-top: 10px;">
                           
                     Total
-                     <strong style="position: relative; left: 1040px;"> S/. {{superTotal}}</strong>
+                     <strong style="position: relative; left: 1019px;"> S/. {{superTotal}}</strong>
                 </div>
             </table>
         

@@ -79,6 +79,35 @@ Meteor.methods({
                 clienteId: this.userId
             });
 
+            let cliente = Clientes.findOne({userId: this.userId}).nombre;
+            let tot = parseFloat(Math.round(total * 100) / 100).toFixed(2);
+
+            Meteor.defer( () => {
+                Email.send({
+                  to: "danieldelgadilloh@gmail.com",
+                  from: 'dexcim@links.com.pe', //Meteor.users.find({_id: this.userId}).emails[0].address,
+                  subject: "Pedido recibido",
+                  html: `
+                        <p><strong>${cliente}</strong></p>
+                        <br>
+                        <p>¡Muchas gracias por su compra!</p>
+                        <br>
+                        <p>Hemos generado un ticket de compra por S/.${tot}. Adjunto encontrará la boleta de su pedido.</p>
+                        <br>
+                        <p>En caso de un pedido a crédito, uno de nuestros representantes se contactará con usted.</p>
+                        <br>
+                        <br>
+                        <p>Sinceramente,</p>
+                        <br><br><br>
+                        <p>DexCim S.A.C.</p>
+                        <p>pedidos@dexcim.com</p>
+                        <p>+(51-1) 424-3477</p>
+                    `
+                });
+            });
+
+            
+
             
         } else {
             return;

@@ -61,3 +61,15 @@ Meteor.publish('Logos', function () {
 		return;
 	}
 });
+
+Meteor.publish('Footer', function () {
+	console.log('hola2');
+	return Contenido.find({});
+	
+});
+
+Meteor.publish('Landing', function () {
+	console.log('hola3');
+	return Landing.find({});
+	
+});

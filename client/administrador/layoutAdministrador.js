@@ -230,6 +230,270 @@ function SubirFotoVendedor (event, template, vendedorId) {
     }
 }
 
+function SubirLogo1 (event, template) {
+
+    let archivo = document.getElementById("logo1");
+
+    if ('files' in archivo) {
+
+        if (archivo.files.length == 0) {
+           alert('Selecciona un archivo, vuelve a intentarlo', 'warning');
+        } else if (archivo.files.length > 1) {
+           alert('Selecciona solo un archivo, vuelve a intentarlo', 'warning');
+        } else {
+
+
+          for (var i = 0; i < archivo.files.length; i++) {
+
+            var filei = archivo.files[i];
+
+            var doc = new FS.File(filei);
+
+            var nuevoNombre = removeDiacritics(doc.name());
+            doc.name(nuevoNombre);
+
+            console.log('llego');
+
+               if (Logos1.find().fetch().length > 0) {
+                Logos1.remove({_id: Logos1.find().fetch()[0]._id});
+                Logos1.insert(doc, function (err, fileObj) {
+                  if (err) {
+                    alert('Hubo un problema', 'warning');
+                  } else {
+                    console.log('Listo!');
+                    alert('Imagen subida');
+                  }
+                });  
+            } else {
+              Logos1.insert(doc, function (err, fileObj) {
+                if (err) {
+                  alert('Hubo un problema', 'warning');
+                } else {
+                  alert('Imagen subida');
+                }
+              });
+            }
+          }
+        }
+    }
+}
+
+function SubirLogo2 (event, template) {
+
+    let archivo = document.getElementById("logo2");
+
+    if ('files' in archivo) {
+
+        if (archivo.files.length == 0) {
+           alert('Selecciona un archivo, vuelve a intentarlo', 'warning');
+        } else if (archivo.files.length > 1) {
+           alert('Selecciona solo un archivo, vuelve a intentarlo', 'warning');
+        } else {
+
+
+          for (var i = 0; i < archivo.files.length; i++) {
+
+            var filei = archivo.files[i];
+
+            var doc = new FS.File(filei);
+
+            var nuevoNombre = removeDiacritics(doc.name());
+            doc.name(nuevoNombre);
+
+           
+            console.log('llego');
+
+            if (Logos2.find().fetch().length > 0) {
+                Logos2.remove({_id: Logos2.find().fetch()[0]._id});
+                Logos2.insert(doc, function (err, fileObj) {
+                  if (err) {
+                    alert('Hubo un problema', 'warning');
+                  } else {
+                    console.log('Listo!');
+                    alert('Imagen subida');
+                  }
+                });  
+            } else {
+              Logos2.insert(doc, function (err, fileObj) {
+                if (err) {
+                  alert('Hubo un problema', 'warning');
+                } else {
+                  alert('Imagen subida');
+                }
+              });
+            }
+          }
+        }
+    }
+}
+
+function SubirLanding (event, template) {
+
+    let archivo = document.getElementById("landing");
+
+    if ('files' in archivo) {
+
+        if (archivo.files.length == 0) {
+           alert('Selecciona un archivo, vuelve a intentarlo', 'warning');
+        } else if (archivo.files.length > 1) {
+           alert('Selecciona solo un archivo, vuelve a intentarlo', 'warning');
+        } else {
+
+
+          for (var i = 0; i < archivo.files.length; i++) {
+
+            var filei = archivo.files[i];
+
+            var doc = new FS.File(filei);
+
+            var nuevoNombre = removeDiacritics(doc.name());
+            doc.name(nuevoNombre);
+
+           
+            console.log('llego');
+
+            if (Landing.find().fetch().length > 0) {
+                Landing.remove({_id: Landing.find().fetch()[0]._id});
+                Landing.insert(doc, function (err, fileObj) {
+                  if (err) {
+                    alert('Hubo un problema', 'warning');
+                  } else {
+                    console.log('Listo!');
+                    alert('Imagen subida');
+                  }
+                });  
+            } else {
+              Landing.insert(doc, function (err, fileObj) {
+                if (err) {
+                  alert('Hubo un problema', 'warning');
+                } else {
+                  alert('Imagen subida');
+                }
+              });
+            }
+          }
+        }
+    }
+}
+
+Template.apariencia.onCreated(function () {
+  var self = this;
+
+  self.autorun(function () {
+    self.subscribe('Logos1');
+    self.subscribe('Logos2');
+    self.subscribe('Secciones');
+    self.subscribe('Landing');
+  });
+
+});
+
+Template.apariencia.onRendered(function () {
+        $('#cp4').colorpicker().on('changeColor', function(e) {
+            let color = e.color.toString('rgba');
+            console.log(color);
+            Meteor.call('setColor1', color, function (err) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log('funca');
+              }
+            });
+        });
+
+        $('#cp3').colorpicker().on('changeColor', function(e) {
+            let color = e.color.toString('rgba');
+            console.log(color);
+            Meteor.call('setColor2', color, function (err) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log('funca');
+              }
+            });
+        });
+});
+
+Template.apariencia.events({
+  'change #logo1': function (e, t) {
+    SubirLogo1(e, t);
+  },
+  'change #logo2': function (e, t) {
+    SubirLogo2(e, t);
+  },
+  'change #landing': function (e, t) {
+    SubirLanding(e, t);
+  },
+  'click .gf': function (e, t) {
+    e.preventDefault();
+
+    let telefono = t.find("[name='tel']").value;
+    let email = t.find("[name='email']").value;
+    let direccion = t.find("[name='direccion']").value;
+
+    if (telefono !== "" && email !== "" && direccion !== "") {
+      Meteor.call('setFooter', telefono, email, direccion, function (err) {
+        if (err) {
+          alert(err);
+        } else {
+          alert('Datos guardados');
+        }
+      });
+    } else {
+      alert('Complete los datos');
+    } 
+  },
+  'click .as': function (e, t) {
+    e.preventDefault();
+
+    let titulo = t.find("[name='titulo']").value;
+    let contenido = t.find("[name='contenido']").value;
+    
+    if (titulo !== "" && contenido !== "") {
+      Meteor.call('agregarSeccion', titulo, contenido, function (err) {
+        if (err) {
+          alert(err);
+        } else {
+          alert('Agregaste una sección');
+        }
+      });
+    } else {
+      alert('Completa los datos');
+    }
+  },
+  'click .eliminar': function () {
+    Meteor.call('eliminarSeccion', this._id, function (err) {
+      if (err) {
+        alert(err);
+      } else {
+        alert('Sección eliminada');
+      }
+    });
+  },
+  'click .guardar': function (e, t) {
+    let contenido = t.find("[name=c" + this._id + "]").value;
+    let titulo = t.find("[name=t" + this._id + "]").value;
+
+    if (contenido !== "" && titulo !== "") { 
+      Meteor.call('editarSeccion', titulo, contenido, this._id, function (err) {
+        if (err) {
+          alert(err);
+        } else {
+          alert('Contenido Editado');
+        }
+      });
+    } else {
+      alert('Complete el contenido');
+    }
+  }
+});
+
+Template.apariencia.helpers({
+  'secciones': function () {
+    return Secciones.find();
+  }
+});
+
 Template.ordenesAdmin.onCreated( () => {
 	let template = Template.instance();
 
@@ -425,8 +689,47 @@ Template.ListaProductos.events({
     Meteor.call('eliminarProducto', this._id, function (err) {
       if (err) {
         console.log(err);
+      } else {
+        Bert.alert( 'Eliminaste el producto.', 'danger', 'growl-top-right' ); 
       }
     });
+  },
+  'change #novedad': function (e, t) {
+    Meteor.call('ToggleNovedad', this._id, function (err) {
+      if (err) {
+        alert('Hubo un error');
+      } else {
+        Bert.alert( 'Modificaste un producto', 'warning', 'growl-bottom-right' );
+      }
+    });
+  },
+  'click .edit': function (e, t) {
+    let datos = {
+      nombre: t.find("[name='nombre']").value,
+      descripcion: t.find("[name='descripcion']").value,
+      precio: t.find("[name='precio']").value,
+      id: this._id
+    }
+
+    if (datos.nombre !== "" && datos.descripcion !== "" && datos.precio !== "") {
+      Meteor.call('EditarProducto', datos, function (err) {
+        if (err) {
+          alert('Hubo un error');
+        } else {
+            Bert.alert( 'Editaste el producto.', 'success', 'growl-top-right' ); 
+        }
+      });
+    }
+  }
+});
+
+Template.ListaProductos.helpers({
+  checked: function () {
+    if (this.novedad === true) {
+      return "checked"
+    } else {
+      return ""
+    }
   }
 });
 

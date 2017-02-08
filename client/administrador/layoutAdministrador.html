@@ -34,6 +34,7 @@
                         <li><a style="color: white" href="/admin">Clientes</a></li>
                         <li><a style="color: white" href="/admin/productos">Productos</a></li>
                         <li><a style="color: white" href="/admin/ordenes">Ordenes</a></li>
+                        <li><a style="color: white" href="/admin/apariencia">Apariencia</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li style="color: white" class="salir"><a style="color: white;">Salir</a></li>
@@ -41,6 +42,101 @@
                 </div>
             </div>
         </nav>
+</template>
+
+<template name="apariencia">
+    <div class="container">
+        <div class="row">
+            <h3>Colores</h3>
+            <div class="col-md-3">
+            <a href="#" class="btn btn-default" id="cp4">Cambiar color de menu</a>
+            </div>
+        </div>
+        <div class="row">
+            <h3>Imagenes</h3>
+            <div class="form-group">
+                <h5>Logo 1</h5>
+                <label class="btn btn-default btn-file">
+                    Subir <input type="file" id="logo1" style="display: none;">
+                </label>
+                <hr>
+                <h5>Logo 2</h5>
+                <label class="btn btn-default btn-file">
+                    Subir <input type="file" id="logo2" style="display: none;">
+                </label>
+                <hr>
+                <h5>Imagen de Landing Page</h5>
+                <label class="btn btn-default btn-file">
+                    Subir <input type="file" id="landing" style="display: none;">
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <h3>Secciones</h3>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="titulo">Título</label>
+                    <input type="text" class="form-control" id="titulo" name="titulo">
+                </div>
+                <div class="form-group">
+                    <label for="contenido">Contenido</label>
+                    <input type="text" class="form-control" name="contenido" id="contenido">
+                </div>
+                 <button class="btn btn-default as">Agregar Sección</button>
+            </div>
+            <br>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th>Título</th>
+                    <th>Contenido</th>
+                    <th>Eliminar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each secciones}}
+                  <tr>
+                    <td><input type="text" class="form-control" name="t{{this._id}}" value="{{this.titulo}}"> </td>
+                    <td>
+                        <div class="form-group">
+                          
+                          <textarea class="form-control" name="c{{this._id}}" rows="5" id="comment">{{this.contenido}}</textarea>
+                        </div>
+                        
+                    </td>
+                    <td>
+                    <button class="btn btn-default eliminar">Eliminar</button>
+                    <br><br>
+                    <button class="btn btn-default guardar">Guardar</button>
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+        <h3>Footer</h3>   
+            <div class="col-md-4">
+                            
+                <div class="form-group">
+                    <label for="tel">Teléfono</label>
+                    <input type="text" class="form-control" id="tel" name="tel">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" name="email" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="direccion">Dirección</label>
+                    <input type="text" class="form-control" name="direccion" id="direccion">
+                </div>
+                <button class="btn btn-default gf">Guardar Footer</button>
+                <br><br>
+            </div>
+            
+
+        </div>
+    </div>
 </template>
 
 <template name="ordenesAdmin">
@@ -455,13 +551,13 @@
         </div>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 {{>ListaProductos}}
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 {{>ListaCategorias}}
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                  {{>ListaCondicionesDePago}}
             </div>
         </div>
@@ -496,7 +592,7 @@
                 </div>
                 <div class="form-group">
                     <label for="precio">Precio</label>
-                    <input type="text" name="precio" class="form-control" id="precio">
+                    <input type="number" min="0" name="precio" class="form-control" id="precio">
                 </div>
 
                 <div class="checkbox">
@@ -518,16 +614,32 @@
                 <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Precio</th>
-                <th>Eliminar</th>
+                <th>Novedad</th>
+                <th>Edit/Remove</th>
             </tr>
         </thead>
         <tbody>
         {{#each productos}}
             <tr>
-                <td>{{this.nombre}}</td>
-                <td>{{this.descripcion}}</td>
-                <td>{{this.precio}}</td>
-                <td><button type="button" class="btn btn-default borrar">Eliminar</button></td>
+                <td>
+                    <input type="text" class="form-control" name="nombre" value="{{this.nombre}}">
+                </td>
+                <td>
+                    <input type="text" class="form-control" name="descripcion" value="{{this.descripcion}}">
+                </td>
+                <td>
+                    <input type="number" min="1" class="form-control" name="precio" value="{{this.precio}}">
+                </td>
+                <td>
+                    <div class="checkbox">
+                        <label><input id="novedad" type="checkbox" {{checked}}></label>
+                    </div>
+                </td>
+                
+                <td>
+                    <button type="button" class="btn btn-primary edit"><i class="fa fa-check" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-danger borrar"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                </td>
             </tr>
         {{/each}}
         </tbody>

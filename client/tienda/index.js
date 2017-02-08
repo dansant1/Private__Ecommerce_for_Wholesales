@@ -1,4 +1,36 @@
-//import zoom from 'jquery-zoom';
+Bert.defaults.style = 'growl-bottom-right';
+
+Template.menu.onCreated(function () {
+  var self = this;
+
+  self.autorun(function () {
+    self.subscribe('Logos1');
+    self.subscribe('Logos2');
+    self.subscribe('Colores');
+    self.subscribe('Footer');
+    
+  });
+});
+
+Template.menu.helpers({
+  logo1: function () {
+
+    return Logos1.find();
+  },
+  logo2: function () {
+    return Logos2.find();
+  },
+  colorone: function () {
+    console.log('funca');
+    return Colores.find().fetch()[0].color1;
+  },
+  colortwo: function () {
+    return Colores.find().fetch()[0].color2;
+  },
+  footer: function () {
+    return Contenido.find();
+  }
+});
 
 Template.carrito.onCreated( () => {
 	let template = Template.instance();
@@ -37,6 +69,7 @@ Template.slider.onRendered(function () {
   										})  
 		}
 
+
 	});
   
 });
@@ -45,6 +78,12 @@ Template.pedido.helpers({
 	carrito: function () {
 		return Carrito.find({ordenado: false, userId: Meteor.userId()});
 	},
+  numero: function (precio) {
+    let t = precio;
+    console.log(precio)
+    let total = parseFloat(Math.round(t * 100) / 100).toFixed(2);
+    return total;
+  },
 	sinIGV: function () {
 		let carrito = Carrito.find({ordenado: false, userId: Meteor.userId()});
   		let total = 0;
@@ -55,7 +94,9 @@ Template.pedido.helpers({
 
   		let sinIGV = (total / 118) * 100;
 
-  		return sinIGV.toFixed(1);
+      total = parseFloat(Math.round(sinIGV * 100) / 100).toFixed(2);
+
+  		return total
 	},
 	igv: function () {
 		let carrito = Carrito.find({ordenado: false, userId: Meteor.userId()});
@@ -66,7 +107,8 @@ Template.pedido.helpers({
   		});
 
   		let igv =  total - ( ( total / 118) * 100 ) 
-		return igv.toFixed(1);
+      total = parseFloat(Math.round(igv * 100) / 100).toFixed(2);
+		  return total
 	},
 	supertotal: function () {
 		  let carrito = Carrito.find({ordenado: false, userId: Meteor.userId()});
@@ -76,7 +118,9 @@ Template.pedido.helpers({
   			total = total + t;
   		});
 
-  		return total	
+      total = parseFloat(Math.round(total * 100) / 100).toFixed(2);
+
+  		return total
 	},
 	condiciones: function () {
 		return CondicionesDePago.find();
@@ -122,18 +166,35 @@ Template.pedido.events({
 		}
 
     if ( $('input.pago:checked').length > 0 ) {
-      Meteor.call('ordenar', datos, function (err) {
+      
+      let carrito = Carrito.find({ordenado: false, userId: Meteor.userId()});
+      let total = 0;
+      carrito.forEach(function (e) {
+        let t = e.precio * e.cantidad;
+        total = total + t;
+      });
+
+      if (total < 300) {
+        Bert.alert('Pedido mínimo de S/.300.00', 'danger');
+      } else {
+         Meteor.call('ordenar', datos, function (err) {
         if (err) {
           console.log(err);
         } else {
           swal(
-            '¡Listo!',
-            'Su pedido ha sido enviado',
+            '¡Gracias!',
+            'Su pedido ha sido enviado, en cualquier momento recibirá una confirmación a su correo',
             'success'
             )
+          analytics.track( 'El usuario hizo un orden', {
+              title: 'El usuario hizo un orden definitiva para ser despachada por la empresa'
+            });
           FlowRouter.go('/')
         }
-      });  
+        }); 
+      }
+
+      
     } else {
       swal(
         'Oops...',
@@ -153,7 +214,20 @@ Template.menuTienda.onCreated( () => {
 		template.subscribe('carrito');
 		template.subscribe('clientes');
     template.subscribe('Logos');
+    template.subscribe('Colores');
+    console.log('HOLA');
 	});
+});
+
+Number.prototype.padLeft = function(base,chr){
+    var  len = (String(base || 10).length - String(this).length)+1;
+    return len > 0? new Array(len).join(chr || '0')+this : this;
+}
+
+Template.miCuenta.helpers({
+  tot: function () {
+    return this.total.toFixed(2);
+  }
 });
 
 Template.miCuenta.onCreated( () => {
@@ -214,7 +288,8 @@ Template.OrdenDetalle.helpers({
 		return Ordenes.findOne({_id: FlowRouter.getParam('orden')});
 	},
 	total: function () {
-		return this.precio * this.cantidad;
+    let total = parseFloat(Math.round(this.precio * this.cantidad * 100) / 100).toFixed(2);
+		return total;
 	},
 	superTotal: function () {
 		let total = 0;
@@ -222,8 +297,13 @@ Template.OrdenDetalle.helpers({
 			total = total + (o.precio * o.cantidad)
 		});
 
+    total = parseFloat(Math.round(total * 100) / 100).toFixed(2);
 		return total;
-	}
+	},
+  price: function () {
+    total = parseFloat(Math.round(this.precio * 100) / 100).toFixed(2);
+    return total;
+  }
 });
 
 Template.miCuenta.helpers({
@@ -240,7 +320,7 @@ Template.miCuenta.helpers({
 		return Ordenes.find();
 	},
 	fecha: function () {
-		var monthNames = [
+		/*var monthNames = [
   			"Enero", "Febrero", "Marzo",
   			"Abril", "Mayo", "Junio", "Julio",
   			"Agosto", "Septiembre", "Octubre",
@@ -252,7 +332,16 @@ Template.miCuenta.helpers({
 		var monthIndex = date.getMonth();
 		var year = date.getFullYear();
 
-		return day + ' ' + monthNames[monthIndex] + ' ' + year;
+		return day + ' ' + monthNames[monthIndex] + ' ' + year;*/
+
+    var d = this.createdAt,
+      dformat = [(d.getMonth()+1).padLeft(),
+               d.getDate().padLeft(),
+               d.getFullYear()].join('/') +' ' +
+              [d.getHours().padLeft(),
+               d.getMinutes().padLeft(),
+               d.getSeconds().padLeft()].join(':');
+        return dformat;
 	
 	}
 });
@@ -266,7 +355,7 @@ Template.menuTienda.helpers({
   			total = total + t;
   		});
 
-  		return total;
+  		return total.toFixed(2);
   	},
   	productos: function () {
   		return Carrito.find({ordenado: false}).fetch().length;
@@ -287,6 +376,9 @@ Template.menuTienda.helpers({
 
       return foto;
 
+    },
+    color: function () {
+      return Colores.find().fetch()[0].color1;
     }
 });
 
@@ -320,15 +412,17 @@ Template.carrito.helpers({
         total = total + t;
       });
 
-      return total;
-  		/*let carrito = Carrito.find();
-  		let total = 0;
-  		carrito.forEach(function (e) {
-  			let t = e.precio * e.cantidad;
-  			total = total + t;
-  		});
+      total = parseFloat(Math.round(total * 100) / 100).toFixed(2);
 
-  		return total;*/
+      return total;
+  },
+  tot: function () {
+    let total = parseFloat(Math.round(this.precio * this.cantidad * 100) / 100).toFixed(2);
+    return total;
+  },
+  price: function () {
+    let total = parseFloat(Math.round(this.precio * 100) / 100).toFixed(2);
+    return total;
   }
 });
 
@@ -381,6 +475,11 @@ Template.Novedades.events({
           if (err) {
             console.log(err);
           } else {
+            Bert.alert( {
+              icon: 'fa-shopping-cart', 
+              message: 'Agregaste un Producto al Carrito',
+              type: 'carrito' 
+            });
             console.log('listo');
           }
         });
@@ -406,6 +505,7 @@ Template.ProductosDeLaTienda.onCreated( () => {
 
     	template.subscribe( 'categorias' );
     	template.subscribe( 'fotos' );
+      template.subscribe('Colores');
   	});
 
     Session.set('pid', '');
@@ -418,6 +518,9 @@ Template.ProductosDeLaTienda.helpers({
   },
   query() {
     return Template.instance().searchQuery.get();
+  },
+  color: function () {
+    return Colores.find().fetch()[0].color1;
   },
   productos(categoriaId) {
 
@@ -433,14 +536,14 @@ Template.ProductosDeLaTienda.helpers({
       ]
     };
 
-    productos = Productos.find({categoriaId: categoriaId}, { sort: {nombre: 1} }, query);
+    productos = Productos.find({categoriaId: categoriaId}, { sort: {descripcion: 1} }, query);
  
     if (query) {
         if ( productos ) {
           return productos;
         }
     } else {
-      	return Productos.find({categoriaId: categoriaId}, { sort: {nombre: 1} });
+      	return Productos.find({categoriaId: categoriaId}, { sort: {descripcion: 1} });
     }
     
   },
@@ -501,8 +604,10 @@ Template.carrito.helpers({
 
 Template.pedido.helpers({
 	total: function () {
-		return this.cantidad * this.precio;
-	}
+		let t = this.cantidad * this.precio;
+    total = parseFloat(Math.round(t * 100) / 100).toFixed(2);
+    return total
+  }
 });
 
 Template.carrito.events({
@@ -510,7 +615,11 @@ Template.carrito.events({
 		Meteor.call('eliminarCarrito', this._id, function (err) {
 			if (err) {
 				console.log(err);
-			}
+			} else {
+        analytics.track( 'Elimino un producto', {
+              title: 'El usuario eliminó un producto desde su carrito'
+        });
+      }
 		});
 	},
 	'click .ordenar': function () {
@@ -531,6 +640,9 @@ Template.carrito.events({
       )
     } else {
       Modal.hide('carrito');
+      analytics.track( 'Inicio proceso de ordenar', {
+              title: 'El usuario comenzó el proceso de ordenar un producto'
+      });
       FlowRouter.go('/pedido');  
     }
 		
@@ -662,7 +774,17 @@ Template.ProductosDeLaTienda.events({
   				if (err) {
   					console.log(err);
   				} else {
-            //$('#cart').addClass('animated bounceOutLeft');
+
+            Bert.alert( {
+              icon: 'fa-shopping-cart', 
+              message: 'Agregaste un Producto al Carrito',
+              type: 'carrito' 
+            });
+
+            analytics.track( 'Agrego un producto', {
+              title: 'El usuario agrego un producto.'
+            });
+
   					t.find('[name=' + id + ']').value = 1;
   				}
   			});
