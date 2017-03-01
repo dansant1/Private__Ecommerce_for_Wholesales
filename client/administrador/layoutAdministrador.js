@@ -517,7 +517,7 @@ Template.apariencia.helpers({
   'secciones': function () {
     return Secciones.find();
   },
-  codigo() {
+  codigos() {
     return CodigosPromocionales.find()
   }
 });

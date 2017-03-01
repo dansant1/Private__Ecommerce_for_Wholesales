@@ -166,7 +166,7 @@ Template.pedido.events({
       codigo: t.find("[name='codigo']").value
 		}
 
-    if (t.find("[name='codigo']").value !==) {
+    if (t.find("[name='codigo']").value !== '') {
       datos.codigo = t.find("[name='codigo']").value
     } else {
       datos.codigo = ''

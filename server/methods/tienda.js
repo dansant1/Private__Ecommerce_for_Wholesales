@@ -41,8 +41,9 @@ Meteor.methods({
         CodigosPromocionales.insert({
           numero: numero,
           codigo: codigo,
-          createdAt: new Date()
-        })
+          createdAt: new Date(),
+          users : [ ]
+        });
       } else {
         return;
       }
@@ -64,8 +65,9 @@ Meteor.methods({
         Carrito.remove({_id: id});
     },
     ordenar: function (datos) {
+      let userId = this.userId;
 
-        if (this.userId) {
+        if (userId) {
 
             let total = 0;
 
@@ -92,19 +94,28 @@ Meteor.methods({
             });
 
             let codigo = Ordenes.find().fetch().length;
+            let desc = 0;
+
+            let codigoPromocional = CodigosPromocionales.findOne({
+              codigo: datos.codigo,
+              users : { $nin : [ this.userId ] }
+            });
 
             if (datos.codigo !== '') {
 
-              if (CodigosPromocionales.findOne({codigo: dato.codigo}).numero !== undefined) {
-                let descuento = CodigosPromocionales.findOne({codigo: dato.codigo}).numero;
+              if (codigoPromocional !== undefined ) {
 
-                let desc = (total / 100) * descuento
+                let descuento = codigoPromocional.numero;
+
+                desc = (total / 100) * descuento;
                 total = total - desc;
+
+                CodigosPromocionales.update({ _id: codigoPromocional._id }, { $push: { users: this.userId } });
+
               }
 
-
-
             }
+
 
             Ordenes.insert({
                 ordenes: ordenes,
@@ -141,7 +152,7 @@ Meteor.methods({
               orden:{
                 items: ordenes,
                 subtotalSinIgv: "",
-                descuento: 0,
+                descuento: desc.toFixed(2),
                 subtotalSinIgv: (total - total*0.18).toFixed(2),
                 impuestos: (total*0.18).toFixed(2),
                 montoTotal: total.toFixed(2),
@@ -149,9 +160,13 @@ Meteor.methods({
               }
             };
 
+            let userId = this.userId;
+            let user = Meteor.users.findOne({_id: userId});
+            let userEmail = user.emails[0].address;
+
             Meteor.defer( () => {
                 Email.send({
-                  to: Meteor.users.find({_id: this.userId}).emails[0].address, //"danieldelgadilloh@gmail.com",
+                  to: userEmail, //"danieldelgadilloh@gmail.com",
                   from: 'dexcim@links.com.pe', //Meteor.users.find({_id: this.userId}).emails[0].address,
                   subject: "Pedido recibido",
                   html: `
@@ -175,15 +190,13 @@ Meteor.methods({
                 SSR.compileTemplate('htmlEmail', Assets.getText('emailFactura.html'));
 
                 Email.send({
-                  to: "danieldelgadilloh@gmail.com",
+                  to: userEmail,
                   from: 'dexcim@links.com.pe', //Meteor.users.find({_id: this.userId}).emails[0].address,
                   subject: "Factura DexCim",
                   html: SSR.render('htmlEmail', htlmData )
                 });
                 console.log( 'se envio un correo' );
             });
-
-
 
 
         } else {
