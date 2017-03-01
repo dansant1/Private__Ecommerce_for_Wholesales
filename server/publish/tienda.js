@@ -7,7 +7,7 @@ Meteor.publish( 'tienda', function( search) {
   if ( search ) {
     let regex = new RegExp( search, 'i' );
 
-    
+
       query = {
       $or: [
         { nombre: regex },
@@ -15,10 +15,10 @@ Meteor.publish( 'tienda', function( search) {
         { precio: regex}
       ]
       };
-    
-    
 
-    
+
+
+
 
     projection.limit = 100;
   }
@@ -51,9 +51,9 @@ Meteor.publish('novedades', function () {
 });
 
 Meteor.publish('banners', function () {
-   
+
       return Banners.find();
-    
+
 });
 
 Meteor.publish('vendedores', function () {
@@ -68,23 +68,29 @@ Meteor.publish('vendedores', function () {
 Meteor.publish('Logos1', function () {
     console.log('hola');
     return Logos1.find();
-    
+
 });
 
 Meteor.publish('Logos2', function () {
-    
+
     return Logos2.find();
-    
+
 });
 
 Meteor.publish('Colores', function () {
-    
+
     return Colores.find();
-    
+
 });
 
 Meteor.publish('Secciones', function () {
-    console.log('holasss');
+
     return Secciones.find();
-    
+
+});
+
+Meteor.publish('codigos', function () {
+
+    return CodigosPromocionales.find();
+
 });

@@ -1,5 +1,7 @@
 Clientes = new Mongo.Collection('clientes');
 
+CodigosPromocionales = new Mongo.Collection('codigospromocionales');
+
 Productos = new Mongo.Collection('productos');
 
 Categorias = new Mongo.Collection('categorias');
@@ -182,5 +184,3 @@ Landing.allow({
     return true;
   }
 });
-
-

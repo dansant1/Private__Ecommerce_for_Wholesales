@@ -1,5 +1,5 @@
 <template name="index">
-	{{#if currentUser}}       
+	{{#if currentUser}}
         {{>menuTienda}}
         {{>Template.dynamic template=contenido}}
     {{else}}
@@ -12,7 +12,7 @@
 	<nav class="navbar navbar-default  navbar-fixed-top" style="background-color: {{colorone}}">
       <div class="container">
         <div class="navbar-header">
-          
+
           <a class="navbar-brand" style="color: white; padding-top: 26px;" href="#">
           {{#each logo1}}
            <img src="{{this.url}}" style="width: 138px; height: 30px; margin-top: -4px">
@@ -24,7 +24,7 @@
           {{/each}}
           </a>
         </div>
-        
+
       </div>
     </nav>
     <br><br>
@@ -36,7 +36,7 @@
 
 <template name="tienda">
 	<div class="container">
-		
+
 		<div class="row">
 			{{>ProductosDeLaTienda}}
 		</div>
@@ -54,7 +54,7 @@
 
                 <div class="modal-body">
                     {{#with producto}}
-                      
+
                       <div class="des">
                         <div class="col-1">
                           {{#each fotos}}
@@ -108,18 +108,18 @@
 
             <div class="tab-content">
                 <div id="menu1" class="tab-pane fade in active">
-                   
+
                     <div class="container">
                             {{#each categorias}}
                                 <div class="row">
-                               {{#if hayResultado this._id}} 
+                               {{#if hayResultado this._id}}
                                <h3>{{this.nombre}}</h3>
                                 <div class="flexible" style="height: 445px;">
                                     {{#if searching}}
                                         {{> loading}}
                                     {{else}}
                                         {{#each productos this._id}}
-                                        
+
                                             <div class="producto">
                                                 {{#each fotosproducto this._id}}
                                                     <img src="{{this.url}}" alt="" class="fotoProducto d"/>
@@ -136,12 +136,12 @@
                                                 <button id="boton-c" style="background-color: {{color}}" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar al carrito</button>
                                                 </p>
                                             </div>
-                                       
+
                                         {{/each}}
                                     {{/if}}
                                 </div>
                                 {{else}}
-                                   
+
                                     {{#if searching}}
                                         {{> loading}}
                                     {{else}}
@@ -163,10 +163,10 @@
                                                 <button id="boton-c" style="background-color: {{color}}" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar al carrito</button>
                                                 </p>
                                             </div>
-                                       
+
                                         {{/each}}
                                     {{/if}}
-                                {{/if}} 
+                                {{/if}}
                                 <hr>
                                 </div>
                             {{/each}}
@@ -177,9 +177,9 @@
                     <h3>{{this.nombre}}</h3>
 
                     <div class="flexible-categoria" >
-                        
+
                         {{#each productos this._id}}
-                        
+
                         <div class="producto">
                             {{#each fotosproducto this._id}}
                                 <img src="{{this.url}}" alt="" class="fotoProducto d"/>
@@ -195,11 +195,11 @@
                                 <p>
                                 <button id="boton-c" type="button" class="btn btn-primary btn-block agregar-carrito" style="background-color: {{color}}">Agregar al carrito</button>
                                 </p>
-                        </div>             
+                        </div>
                         {{/each}}
                     </div>
                 </div>
-             
+
                 {{/each}}
             </div>
         </div>
@@ -210,8 +210,8 @@
   	</div>
 
   	<div class="flexible" style="height: 465px;">
-    
-      
+
+
       {{#each productosn}}
         <div class="producto">
             <span class="novedad">
@@ -226,17 +226,17 @@
           	<p>
           		<div class="input-group">
           			<input type="text" name="{{this._id}}" class="form-control input-number" value="1" min="1" max="10">
-          
-          		
+
+
       			</div>
           	</p>
           	<p>
           		<button id="boton-c" style="background-color: {{color}}" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar al carrito</button>
           	</p>
         </div>
-      
+
       {{/each}}
-   
+
   </div>
 </template>
 
@@ -254,9 +254,9 @@
                 </div>
 
                 <div class="modal-body">
-                  
-    
-     
+
+
+
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -282,7 +282,7 @@
                         </td>
                         <td class="col-sm-1 col-md-1 text-center"><strong>S/. {{price}}</strong></td>
                         <td class="col-sm-1 col-md-2 text-center"><strong>S/. {{tot}}</strong></td>
-                       
+
                         <td class="col-sm-1 col-md-1">
 
                         	<button type="button" class="btn btn-danger eliminar" style="width: 100%">
@@ -292,7 +292,7 @@
                     </tr>
                    {{/each}}
                 </tbody>
-               	
+
                 <tfoot>
                   <tr>
                     <td>Total</td>
@@ -304,12 +304,12 @@
                     <td></td>
                   </tr>
                 </tfoot>
-                
+
             </table>
-            
-                              
+
+
               <div class="page-header clearfix">
-               
+
                 <div class="pull-right">
                   <a href="/" class="btn btn-default cc">
                       <span class="glyphicon glyphicon-shopping-cart"></span> Continuar Comprando
@@ -319,9 +319,9 @@
                         </a>
                 </div>
                 </div>
-    
+
                 </div>
-      
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
@@ -332,7 +332,7 @@
 </template>
 
 <template name="editarCuenta">
-  
+
     <div class="modal fade">
         <div class="modal-dialog  modal-lg">
             <div class="modal-content">
@@ -341,7 +341,7 @@
                     <h4 class="modal-title">Editar mi cuenta</h4>
                 </div>
 
-                <div class="modal-body"> 
+                <div class="modal-body">
                 {{#with cliente}}
                     <form>
                       <div class="form-group">
@@ -355,7 +355,7 @@
                       <div class="form-group">
                         <label for="de">Dirección de Envío</label>
                         <input type="text" class="form-control" name="de" id="de" value="{{this.direccionEnvio}}">
-                      </div>  
+                      </div>
                       <button type="submit" class="btn btn-default">Guardar</button>
                   </form>
                 {{/with}}
@@ -368,10 +368,10 @@
 </template>
 
 <template name="pedido">
-	
+
 	<div class="container">
 		<div class="row">
-	
+
 			<div class="col-md-4">
 				<div class="box-white">
 					<h2>1. Revise su Pedido</h2>
@@ -393,7 +393,7 @@
       					</tr>
 
       					{{/each}}
-     
+
     				</tbody>
   					</table>
 
@@ -401,7 +401,7 @@
     				<tbody>
                 <tr>
                   <h2 style="font-weight: bold; font-size: 15px; width: 80%; margin-left: 70px; margin-top: 15px; text-align: center;">Resumen</h2>
-                  
+
                 </tr>
       					<tr>
         					<td style="width: 240px;">Subtotal sin IGV</td>
@@ -409,8 +409,8 @@
       					</tr>
 
       					<tr>
-        					
-        					
+
+
         					<td>IGV (18%)</td>
         					<td>S/. {{igv}}</td>
       					</tr>
@@ -418,13 +418,14 @@
         					<td>Total con IGV</td>
         					<td> S/. {{supertotal}} </td>
       					</tr>
-     
+
     				</tbody>
   					</table>
+						<input type="text" name="codigo" placeholder="Codigo Promocional" class="form-control">
   					<button style="width: 330px; display: block; margin: 10px auto;" type="button" class="btn btn-primary ordenar">Finzalizar Compra</button>
 				</div>
 			</div>
-				
+
 
 			<div class="col-md-4">
 				<div class="box-white">
@@ -435,16 +436,16 @@
     						{{#each condiciones}}
       						<tr>
 
-        						<td> 
+        						<td>
 									<input type="radio" name="pago" class="pago"  value="{{this.nombre}}" id="{{this._id}}">
     								<label for="{{this._id}}">{{this.nombre}}</label>
         						</td>
-        
-      						</tr> 
+
+      						</tr>
       						{{/each}}
     					</tbody>
   				</table>
-  				
+
 
   				<h2>3. Sugerencias</h2>
   					<div class="form-group">
@@ -457,7 +458,7 @@
 				<div class="col-md-4">
 				<div class="box-white">
 					<h2>4. Información</h2>
-					
+
   						<table class="table">
    <!-- Son datos del cliente -->
     						<tbody>
@@ -476,22 +477,22 @@
       <tr>
         <td>Dirección de Entrega</td>
         <td>{{de}}</td>
-        
+
       </tr>
       <tr>
         <td>Teléfono</td>
         <td>{{telefono}}</td>
-      
+
       </tr>
       <tr>
         <td>Correo Electronico de la Empresa</td>
         <td> {{correo}} </td>
-      
+
       </tr>
 
-     
-      
-      
+
+
+
     </tbody>
   </table>
 
@@ -505,14 +506,14 @@
       						</tr>
     				    </thead>
     					<tbody>
-    						
+
       						  <tr>
 
         <td>{{asesor}}</td>
         <td>{{emailAsesor}}</td>
         <td>{{telefonoAsesor}}</td>
                                 </tr>
-      						
+
     					</tbody>
   				</table>
 
@@ -569,17 +570,17 @@
 						<p>{{currentUser.profile.nombre}}</p>
 						<p> {{email}} </p>
 						<p> <button type="button" class="btn btn-primary editar">Editar cuenta</button></p>
-						
-						
+
+
 					</div>
-					
+
 				</div>
 				<div class="row">
 					<div class="col-md-6">
 						<h4>Dirección de Cobranza</h4>
 						<p> {{cobranza}} </p>
 					</div>
-					<div class="col-md-6">	
+					<div class="col-md-6">
 						<h4>Dirección de Envio</h4>
 						<p>{{envio}}</p>
 					</div>
@@ -595,8 +596,8 @@
   	</div>
 
   	<div class="flexible" style="height: 465px;">
-    
-      
+
+
       {{#each productos}}
         <div class="producto">
             <span class="novedad">
@@ -611,17 +612,17 @@
           	<p>
           		<div class="input-group">
           			<input type="number" style="width: 178px" name="{{this._id}}" class="form-control input-number" value="1" min="1" max="10">
-          
-          		
+
+
       			</div>
           	</p>
           	<p>
           		<button id="boton-c" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar al carrito</button>
           	</p>
         </div>
-      
+
       {{/each}}
-   
+
   </div>
 </template>
 
@@ -657,10 +658,10 @@
                       {{#each foto}}
                        <img src="{{this.url}}" alt="" style="margin-left: 15px;" class="fotoAsesor"/>
                       {{/each}}
-                      
+
                       </li>
                       <li style="position: relative; top: 6px" id="curso">
-                    		<a style="color: white; padding-top: 0px;"> 
+                    		<a style="color: white; padding-top: 0px;">
 								          <p style="font-size: 13px; margin-bottom: 0;">Asesor: {{vendedor}} </p>
 								          <p style="font-size: 13px; margin-bottom: 0;">Tel: {{telefono}} </p>
                     			<p style="font-size: 13px; margin-bottom: 0;"> {{emailVendedor}} </p>
@@ -686,7 +687,7 @@
         <div class="row">
         {{#with orden}}
         <h2>Orden Nº {{this.codigo}}</h2>
-        <p>Status {{this.status}}</p> 
+        <p>Status {{this.status}}</p>
             <div class="col-md-12">
                  <table class="table table-hover">
                 <thead>
@@ -695,10 +696,10 @@
                         <th>Cantidad</th>
                         <th class="text-center">Precio (Inc. IGV)</th>
                         <th class="text-center">Total</th>
-                        
+
                     </tr>
                 </thead>
-                
+
                 <tbody>
                 {{#each this.ordenes}}
                     <tr style="border-bottom: 1px solid #ddd;">
@@ -708,21 +709,21 @@
                         </td>
                         <td class="col-sm-1 col-md-3 text-center"><strong>S/. {{price}}</strong></td>
                         <td class="col-sm-1 col-md-1 text-center"><strong>S/. {{total}}</strong></td>
-                       
-                        
+
+
                     </tr>
                    {{/each}}
                    <hr>
                 </tbody>
-                
+
                 <div style="width: 100%; padding-left: 7px; margin-top: 10px;">
-                          
+
                     Total
                      <strong style="position: relative; left: 1019px;"> S/. {{superTotal}}</strong>
                 </div>
             </table>
-        
-    
+
+
             </div>
              {{/with}}
         </div>
@@ -731,31 +732,31 @@
 
 <template name="slider">
 	<div class="container" style="width: 70%;">
-  
+
   <div class="swiper-container">
-   
+
     <div class="swiper-wrapper">
-        
+
         {{#each imagenes}}
 
       <div class="swiper-slide">
         <img src="{{this.url}}" alt="" class="slide"/>
       </div>
 
-   {{/each}} 
-        
+   {{/each}}
+
     </div>
-    
-   <div class="swiper-pagination"></div> 
-    
-    
+
+   <div class="swiper-pagination"></div>
+
+
     <div class="swiper-button-prev"></div>
-    <div class="swiper-button-next"></div> 
-    
+    <div class="swiper-button-next"></div>
+
 
     <div class="swiper-scrollbar"></div>
   </div>
-  		
+
 </div>
 <br>
 </template>

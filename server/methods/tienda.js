@@ -1,6 +1,16 @@
+function generateCode() {
+    var length = 8,
+        charset = "ITUV56789",
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
+}
+
 Meteor.methods({
     agregarAlCarrito: function (datos) {
-      
+
         if (this.userId) {
 
             //if ( Carrito.find({productoId: datos.productoId}).fetch().length === 0 ) {
@@ -15,20 +25,34 @@ Meteor.methods({
                     userId: this.userId,
                     ordenado: false
                 });
-          
-            }           
+
+            }
 
         //} else {
          //   return;
         //}
 
     },
+    generarCodigoPromocional(numero) {
+      if (this.userId) {
+
+        let codigo = generateCode();
+
+        CodigosPromocionales.insert({
+          numero: numero,
+          codigo: codigo,
+          createdAt: new Date()
+        })
+      } else {
+        return;
+      }
+    },
     actualizarCantidadCarrito: function (cantidad, productoId) {
         if (this.userId) {
 
             Carrito.update({productoId: productoId}, {
                 $inc: {
-                    cantidad: cantidad  
+                    cantidad: cantidad
                 }
             });
 
@@ -68,6 +92,19 @@ Meteor.methods({
 
             let codigo = Ordenes.find().fetch().length;
 
+            if (datos.codigo !== '') {
+
+              if (CodigosPromocionales.findOne({codigo: dato.codigo}).numero !== undefined) {
+                let descuento = CodigosPromocionales.findOne({codigo: dato.codigo}).numero;
+
+                let desc = (total / 100) * descuento
+                total = total - desc;
+              }
+
+
+
+            }
+
             Ordenes.insert({
                 ordenes: ordenes,
                 codigo: codigo++,
@@ -84,7 +121,7 @@ Meteor.methods({
 
             Meteor.defer( () => {
                 Email.send({
-                  to: "danieldelgadilloh@gmail.com",
+                  to: Meteor.users.find({_id: this.userId}).emails[0].address, //"danieldelgadilloh@gmail.com",
                   from: 'dexcim@links.com.pe', //Meteor.users.find({_id: this.userId}).emails[0].address,
                   subject: "Pedido recibido",
                   html: `
@@ -106,13 +143,16 @@ Meteor.methods({
                 });
             });
 
-            
 
-            
+
+
         } else {
             return;
         }
 
+    },
+    eliminarPromocion(id) {
+      CodigosPromocionales.remove({_id: id})
     },
     actualizarCuenta: function (datos, id) {
         Clientes.update({_id: id}, {

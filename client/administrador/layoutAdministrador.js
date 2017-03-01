@@ -263,7 +263,7 @@ function SubirLogo1 (event, template) {
                     console.log('Listo!');
                     alert('Imagen subida');
                   }
-                });  
+                });
             } else {
               Logos1.insert(doc, function (err, fileObj) {
                 if (err) {
@@ -300,7 +300,7 @@ function SubirLogo2 (event, template) {
             var nuevoNombre = removeDiacritics(doc.name());
             doc.name(nuevoNombre);
 
-           
+
             console.log('llego');
 
             if (Logos2.find().fetch().length > 0) {
@@ -312,7 +312,7 @@ function SubirLogo2 (event, template) {
                     console.log('Listo!');
                     alert('Imagen subida');
                   }
-                });  
+                });
             } else {
               Logos2.insert(doc, function (err, fileObj) {
                 if (err) {
@@ -349,7 +349,7 @@ function SubirLanding (event, template) {
             var nuevoNombre = removeDiacritics(doc.name());
             doc.name(nuevoNombre);
 
-           
+
             console.log('llego');
 
             if (Landing.find().fetch().length > 0) {
@@ -361,7 +361,7 @@ function SubirLanding (event, template) {
                     console.log('Listo!');
                     alert('Imagen subida');
                   }
-                });  
+                });
             } else {
               Landing.insert(doc, function (err, fileObj) {
                 if (err) {
@@ -384,6 +384,7 @@ Template.apariencia.onCreated(function () {
     self.subscribe('Logos2');
     self.subscribe('Secciones');
     self.subscribe('Landing');
+    self.subscribe('codigos')
   });
 
 });
@@ -441,14 +442,38 @@ Template.apariencia.events({
       });
     } else {
       alert('Complete los datos');
-    } 
+    }
+  },
+  'click .generar-codigo'(e, t) {
+    let numero = t.find("[name='numero']").value;
+
+    if (numero !== '') {
+      Meteor.call('generarCodigoPromocional', numero, (err) => {
+        if (err) {
+          alert('Hubo un error')
+        } else {
+          Bert.alert('Promocion generada')
+        }
+      })
+    } else {
+      Bert.alert('Ingrese un descuento')
+    }
+  },
+  'click .eliminar'() {
+    Meteor.call('eliminarPromocion', this._id, (err) => {
+      if (err) {
+        alert(err)
+      } else {
+        Bert.alert('Codigo Eliminado')
+      }
+    })
   },
   'click .as': function (e, t) {
     e.preventDefault();
 
     let titulo = t.find("[name='titulo']").value;
     let contenido = t.find("[name='contenido']").value;
-    
+
     if (titulo !== "" && contenido !== "") {
       Meteor.call('agregarSeccion', titulo, contenido, function (err) {
         if (err) {
@@ -474,7 +499,7 @@ Template.apariencia.events({
     let contenido = t.find("[name=c" + this._id + "]").value;
     let titulo = t.find("[name=t" + this._id + "]").value;
 
-    if (contenido !== "" && titulo !== "") { 
+    if (contenido !== "" && titulo !== "") {
       Meteor.call('editarSeccion', titulo, contenido, this._id, function (err) {
         if (err) {
           alert(err);
@@ -491,6 +516,9 @@ Template.apariencia.events({
 Template.apariencia.helpers({
   'secciones': function () {
     return Secciones.find();
+  },
+  codigo() {
+    return CodigosPromocionales.find()
   }
 });
 
@@ -503,14 +531,14 @@ Template.ordenesAdmin.onCreated( () => {
 });
 
 Template.ordenesAdmin.events({
-	'click .p': function(event) {	
+	'click .p': function(event) {
 
   		if (this.status === "pendiente") {
   			Meteor.call('enviar', this._id , function (err) {
   				if (err) {
   					console.log(err);
-  				} 
-  				
+  				}
+
   			});
   		} else {
   			Meteor.call('pendiente', this._id, function (err) {
@@ -568,7 +596,7 @@ Template.ordenesAdmin.helpers({
 		var year = date.getFullYear();
 
 		return day + ' ' + monthNames[monthIndex] + ' ' + year;
-	
+
 	},
 	check: function () {
 		if (this.status === "pendiente") {
@@ -650,7 +678,7 @@ Template.FormularioVendedor.events({
 					t.find("[name='telefono']").value = ""
 					t.find("[name='direccion']").value = ""
 					t.find("[name='email']").value = ""
-				  
+
           SubirFotoVendedor(e, t, result.id);
 
 				}
@@ -661,8 +689,8 @@ Template.FormularioVendedor.events({
 
 Template.ListaClientes.onCreated(function () {
 	let self = this;
-	this.autorun( function () { 
-		self.subscribe('clientes') 
+	this.autorun( function () {
+		self.subscribe('clientes')
 	});
 });
 
@@ -690,7 +718,7 @@ Template.ListaProductos.events({
       if (err) {
         console.log(err);
       } else {
-        Bert.alert( 'Eliminaste el producto.', 'danger', 'growl-top-right' ); 
+        Bert.alert( 'Eliminaste el producto.', 'danger', 'growl-top-right' );
       }
     });
   },
@@ -716,7 +744,7 @@ Template.ListaProductos.events({
         if (err) {
           alert('Hubo un error');
         } else {
-            Bert.alert( 'Editaste el producto.', 'success', 'growl-top-right' ); 
+            Bert.alert( 'Editaste el producto.', 'success', 'growl-top-right' );
         }
       });
     }
@@ -812,8 +840,8 @@ Template.ListaBanner.events({
 
 Template.ListaProductos.onCreated(function () {
 	let self = this;
-	this.autorun( function () { 
-		self.subscribe('productos') 
+	this.autorun( function () {
+		self.subscribe('productos')
 	});
 });
 
@@ -833,7 +861,7 @@ Template.FormularioProductos.onCreated( () => {
 
 Template.FormularioProductos.helpers({
 	categorias: function () {
-	
+
 		return Categorias.find();
 	}
 });
@@ -868,7 +896,7 @@ Template.FormularioProductos.events({
 					t.find('[name="descripcion"]').value = "";
 					t.find('[name="precio"]').value = "";
 				}
-			});	
+			});
 		}
 	}
 });
@@ -915,7 +943,7 @@ Template.ListaCategorias.onCreated(function () {
 
 	self.autorun(function () {
 		self.subscribe('categorias');
-	}); 
+	});
 });
 
 Template.ListaCategorias.helpers({
@@ -949,7 +977,7 @@ Template.ListaCondicionesDePago.onCreated(function () {
 
 	self.autorun(function () {
 		self.subscribe('condiciones');
-	}); 
+	});
 });
 
 Template.ListaCondicionesDePago.helpers({

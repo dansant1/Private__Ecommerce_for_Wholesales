@@ -8,7 +8,7 @@ Template.menu.onCreated(function () {
     self.subscribe('Logos2');
     self.subscribe('Colores');
     self.subscribe('Footer');
-    
+
   });
 });
 
@@ -60,18 +60,18 @@ Template.slider.onRendered(function () {
 			var mySwiper = new Swiper ('.swiper-container', {
     										direction: 'horizontal',
     										loop: true,
-											effect: 'fade', 
+											effect: 'fade',
 											pagination: '.swiper-pagination',
 											nextButton: '.swiper-button-next',
 											prevButton: '.swiper-button-prev',
 											scrollbar: '.swiper-scrollbar',
 											autoplay: 10000
-  										})  
+  										})
 		}
 
 
 	});
-  
+
 });
 
 Template.pedido.helpers({
@@ -106,7 +106,7 @@ Template.pedido.helpers({
   			total = total + t;
   		});
 
-  		let igv =  total - ( ( total / 118) * 100 ) 
+  		let igv =  total - ( ( total / 118) * 100 )
       total = parseFloat(Math.round(igv * 100) / 100).toFixed(2);
 		  return total
 	},
@@ -162,11 +162,18 @@ Template.pedido.events({
 		let datos = {
 			carrito: Carrito.findOne({userId: Meteor.userId()})._id,
 			condicionPago: $( "input.pago:checked" ).val(),
-			comentario: t.find("[name='comentario']").value
+			comentario: t.find("[name='comentario']").value,
+      codigo: t.find("[name='codigo']").value
 		}
 
+    if (t.find("[name='codigo']").value !==) {
+      datos.codigo = t.find("[name='codigo']").value
+    } else {
+      datos.codigo = ''
+    }
+
     if ( $('input.pago:checked').length > 0 ) {
-      
+
       let carrito = Carrito.find({ordenado: false, userId: Meteor.userId()});
       let total = 0;
       carrito.forEach(function (e) {
@@ -191,10 +198,10 @@ Template.pedido.events({
             });
           FlowRouter.go('/')
         }
-        }); 
+        });
       }
 
-      
+
     } else {
       swal(
         'Oops...',
@@ -203,7 +210,7 @@ Template.pedido.events({
         )
     }
 
-		
+
 	}
 });
 
@@ -342,7 +349,7 @@ Template.miCuenta.helpers({
                d.getMinutes().padLeft(),
                d.getSeconds().padLeft()].join(':');
         return dformat;
-	
+
 	}
 });
 
@@ -386,7 +393,7 @@ Template.slider.onCreated( () => {
 	let template = Template.instance();
 
 	template.autorun( () => {
-		
+
 		template.subscribe( 'banners' );
 	});
 });
@@ -428,11 +435,11 @@ Template.carrito.helpers({
 
 
 Template.Novedades.onCreated( () => {
-	
+
 	let template = Template.instance();
 
   	template.autorun( () => {
-    	
+
     	template.subscribe( 'novedades' );
     	template.subscribe( 'fotos' );
   	});
@@ -457,7 +464,7 @@ Template.Novedades.events({
       let id = this._id;
 
       let cantidad = t.find('[name=' + id + ']').value;
-      
+
 
       let datos = {
         cantidad: cantidad,
@@ -476,9 +483,9 @@ Template.Novedades.events({
             console.log(err);
           } else {
             Bert.alert( {
-              icon: 'fa-shopping-cart', 
+              icon: 'fa-shopping-cart',
               message: 'Agregaste un Producto al Carrito',
-              type: 'carrito' 
+              type: 'carrito'
             });
             console.log('listo');
           }
@@ -488,7 +495,7 @@ Template.Novedades.events({
 });
 
 Template.ProductosDeLaTienda.onCreated( () => {
-	
+
 	let template = Template.instance();
 
   	template.searchQuery = new ReactiveVar();
@@ -527,7 +534,7 @@ Template.ProductosDeLaTienda.helpers({
    	let productos;
     let query;
     let regex = new RegExp( Template.instance().searchQuery.get() , 'i' );
-    
+
     query = {
       $or: [
         { nombre: regex },
@@ -537,7 +544,7 @@ Template.ProductosDeLaTienda.helpers({
     };
 
     productos = Productos.find({categoriaId: categoriaId}, { sort: {descripcion: 1} }, query);
- 
+
     if (query) {
         if ( productos ) {
           return productos;
@@ -545,13 +552,13 @@ Template.ProductosDeLaTienda.helpers({
     } else {
       	return Productos.find({categoriaId: categoriaId}, { sort: {descripcion: 1} });
     }
-    
+
   },
   hayResultado(categoriaId) {
 	let productos;
     let query;
     let regex = new RegExp( Template.instance().searchQuery.get() , 'i' );
-    
+
     query = {
       $or: [
         { nombre: regex },
@@ -561,7 +568,7 @@ Template.ProductosDeLaTienda.helpers({
     };
 
 	productos = Productos.find({categoriaId: categoriaId}, query).fetch().length;
- 
+
     if (query) {
         if ( productos > 0 ) {
 			//if ( Template.instance().searching.get() ) {
@@ -569,7 +576,7 @@ Template.ProductosDeLaTienda.helpers({
 			//} else {
 				//return false;
 			//}
-          
+
         } else {
 			return false
 		}
@@ -583,7 +590,7 @@ Template.ProductosDeLaTienda.helpers({
 	  } else {
 		  return;
 	  }
-	  
+
   },
   nombreCategoria(categoriaId) {
 	  return Categorias.findOne({_id: categoriaId}).nombre;
@@ -643,9 +650,9 @@ Template.carrito.events({
       analytics.track( 'Inicio proceso de ordenar', {
               title: 'El usuario comenzó el proceso de ordenar un producto'
       });
-      FlowRouter.go('/pedido');  
+      FlowRouter.go('/pedido');
     }
-		
+
 	}
 });
 
@@ -671,22 +678,22 @@ Template.ProductosDeLaTienda.events({
   		e.preventDefault();
 
   		var $this = $(e.target);
-    
+
    	 	fieldName = $this.attr('data-field');
     	type      = $this.attr('data-type');
     	var input = $("input[name='"+fieldName+"']");
     	var currentVal = parseInt(input.val());
 
     	console.log(fieldName);
-    	
+
     	if (!isNaN(currentVal)) {
-        	
+
         	if (type == 'minus') {
-            
+
             	if(currentVal > input.attr('min')) {
                 	input.val(currentVal - 1).change();
-            	} 
-            
+            	}
+
             	if ( parseInt(input.val()) == input.attr('min') ) {
                 	$this.attr('disabled', true);
             	}
@@ -696,7 +703,7 @@ Template.ProductosDeLaTienda.events({
             	if(currentVal < input.attr('max')) {
                 	input.val(currentVal + 1).change();
             	}
-            	
+
             	if(parseInt(input.val()) == input.attr('max')) {
                 	$this.attr('disabled', true);
             	}
@@ -710,13 +717,13 @@ Template.ProductosDeLaTienda.events({
   'change .input-number': function (e, t) {
 
   		var $this = $(e.target);
-  		
+
   		minValue =  parseInt($this.attr('min'));
     	maxValue =  parseInt($this.attr('max'));
     	valueCurrent = parseInt($this.val());
-    
+
     	name = $this.attr('name');
-    	
+
     	if(valueCurrent >= minValue) {
         	$(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
     	} else {
@@ -737,16 +744,16 @@ Template.ProductosDeLaTienda.events({
   		$this.data('oldValue', $this.val());
   },
   'keydown .input-number': function (e, t) {
-  		
+
   		if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
              // Allow: Ctrl+A
-            (e.keyCode == 65 && e.ctrlKey === true) || 
+            (e.keyCode == 65 && e.ctrlKey === true) ||
              // Allow: home, end, left, right
             (e.keyCode >= 35 && e.keyCode <= 39)) {
                  // let it happen, don't do anything
                  return;
         }
-        
+
         if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
             e.preventDefault();
         }
@@ -756,7 +763,7 @@ Template.ProductosDeLaTienda.events({
   		let id = this._id;
 
   		let cantidad = t.find('[name=' + id + ']').value;
-  		
+
 
   		let datos = {
   			cantidad: cantidad,
@@ -776,9 +783,9 @@ Template.ProductosDeLaTienda.events({
   				} else {
 
             Bert.alert( {
-              icon: 'fa-shopping-cart', 
+              icon: 'fa-shopping-cart',
               message: 'Agregaste un Producto al Carrito',
-              type: 'carrito' 
+              type: 'carrito'
             });
 
             analytics.track( 'Agrego un producto', {
@@ -818,7 +825,7 @@ Template.detalleProducto.events({
       let id = this._id;
 
       let cantidad = t.find('[name=' + id + ']').value;
-      
+
 
       let datos = {
         cantidad: cantidad,
@@ -855,4 +862,3 @@ Template.menuTienda.events({
 		Modal.show('carrito');
 	}
 });
-
