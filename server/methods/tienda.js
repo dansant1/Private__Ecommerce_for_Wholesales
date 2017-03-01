@@ -79,7 +79,8 @@ Meteor.methods({
                 ordenes.push({
                     producto: c.producto,
                     precio: c.precio,
-                    cantidad: c.cantidad
+                    cantidad: c.cantidad,
+                    subtotal: (c.precio * c.cantidad).toFixed(2)
                 });
 
                 Carrito.update({_id: c._id}, {
@@ -116,8 +117,37 @@ Meteor.methods({
                 clienteId: this.userId
             });
 
-            let cliente = Clientes.findOne({userId: this.userId}).nombre;
+            let cliente = Clientes.findOne({userId: this.userId});
             let tot = parseFloat(Math.round(total * 100) / 100).toFixed(2);
+
+            let fechaCompra = new Date();
+            let mm = fechaCompra.getMonth() + 1; // getMonth() is zero-based
+            let dd = fechaCompra.getDate();
+
+            let stringDate =  [
+              (dd>9 ? '' : '0') + dd,
+              (mm>9 ? '' : '0') + mm,
+              fechaCompra.getFullYear(),
+            ].join('/');
+
+
+            let htlmData = {
+              nombreCliente : cliente.nombre,
+              direccionCliente: cliente.direccionEnvio,
+              fechaCompra: stringDate,
+              telefonoCliente: cliente.telefono,
+              emailCliente: cliente.email,
+              numeroFactura: codigo,
+              orden:{
+                items: ordenes,
+                subtotalSinIgv: "",
+                descuento: 0,
+                subtotalSinIgv: (total - total*0.18).toFixed(2),
+                impuestos: (total*0.18).toFixed(2),
+                montoTotal: total.toFixed(2),
+                terminos: datos.condicionPago
+              }
+            };
 
             Meteor.defer( () => {
                 Email.send({
@@ -125,7 +155,7 @@ Meteor.methods({
                   from: 'dexcim@links.com.pe', //Meteor.users.find({_id: this.userId}).emails[0].address,
                   subject: "Pedido recibido",
                   html: `
-                        <p><strong>${cliente}</strong></p>
+                        <p><strong>${cliente.nombre}</strong></p>
                         <br>
                         <p>¡Muchas gracias por su compra!</p>
                         <br>
@@ -141,6 +171,16 @@ Meteor.methods({
                         <p>+(51-1) 424-3477</p>
                     `
                 });
+
+                SSR.compileTemplate('htmlEmail', Assets.getText('emailFactura.html'));
+
+                Email.send({
+                  to: "danieldelgadilloh@gmail.com",
+                  from: 'dexcim@links.com.pe', //Meteor.users.find({_id: this.userId}).emails[0].address,
+                  subject: "Factura DexCim",
+                  html: SSR.render('htmlEmail', htlmData )
+                });
+                console.log( 'se envio un correo' );
             });
 
 
