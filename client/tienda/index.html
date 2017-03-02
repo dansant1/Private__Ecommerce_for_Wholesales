@@ -632,40 +632,49 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/" style="color: white; padding-top: 26px;">
-                       <img src="/logo.png" style="width: 160px; height: 35px; margin-top: -6px;">
+                    <a class="navbar-brand" href="/">
+                       <img src="/logo.png" class="logo">
                     </a>
+										<div class="carritos pull-right hidden-sm hidden-md hidden-lg" id="cart">
+											<a style="font-size: 24px; padding:20px; position:relative; top:6px;" class="blanco">
+											{{productos}} <i class="fa fa-shopping-cart blanco"  aria-hidden="true"></i>
+											</a>
+										</div>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse" style="background-color: {{color}}">
                 	 <ul class="nav navbar-nav">
-                    	<li>
-                    		<a style="color: white;">
-                    			Hola, {{currentUser.profile.nombre}}
-                    		</a>
-                    	</li>
-                        <li>
-                        	<a href="/cuenta" style="color: white">
-                        		Mi cuenta
-                        	</a>
-                        </li>
+												<li style="position: relative; top: 4px">
+	                      {{#each foto}}
+	                       <img src="{{this.url}}" alt="" style="margin-left: 15px;" class="fotoAsesor"/>
+	                      {{/each}}
+
+	                      </li>
+	                      <li>
+	                    		<a class="asesor">
+									          <p>Asesor: {{vendedor}} </p>
+									          <p>Tel: {{telefono}} </p>
+	                    			<p> {{emailVendedor}} </p>
+	                    		</a>
+	                    	</li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                    	<li style="position: relative; top: 4px">
-                      {{#each foto}}
-                       <img src="{{this.url}}" alt="" style="margin-left: 15px;" class="fotoAsesor"/>
-                      {{/each}}
-
-                      </li>
-                      <li style="position: relative; top: 6px" id="curso">
-                    		<a style="color: white; padding-top: 0px;">
-								          <p style="font-size: 13px; margin-bottom: 0;">Asesor: {{vendedor}} </p>
-								          <p style="font-size: 13px; margin-bottom: 0;">Tel: {{telefono}} </p>
-                    			<p style="font-size: 13px; margin-bottom: 0;"> {{emailVendedor}} </p>
-                    		</a>
-                    	</li>
-                    	<li class="carritos" id="cart"><a style="font-size: 24px" class="blanco">
-                    		{{productos}} <i class="fa fa-shopping-cart blanco"  aria-hidden="true"></i></a></li>
-                        <li class="salir"><a style="color: white">Cerrar Sesión</a></li>
+											<li>
+											<a style="color: white;">
+												Hola, {{currentUser.profile.nombre}}
+											</a>
+										</li>
+											<li class="carritos hidden-xs" id="cart">
+												<a style="font-size: 24px;" class="blanco">
+												{{productos}} <i class="fa fa-shopping-cart blanco"  aria-hidden="true"></i>
+												</a>
+											</li>
+											<li>
+												<a href="/cuenta" style="color: white">
+													<i class="fa fa-user fa-lg"></i> Mi cuenta
+												</a>
+											</li><li>
+												<a style="color: white" class="salir"><i class="fa fa-close fa-lg"></i> Salir </a>
+											</li>
                     </ul>
                 </div>
             </div>

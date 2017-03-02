@@ -858,7 +858,6 @@ Template.detalleProducto.events({
 
 Template.menuTienda.events({
 	'click .carritos': function () {
-		console.log('hola');
 		Modal.show('carrito');
 	}
 });
