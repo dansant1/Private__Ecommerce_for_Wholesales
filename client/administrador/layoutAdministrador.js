@@ -459,8 +459,9 @@ Template.apariencia.events({
       Bert.alert('Ingrese un descuento')
     }
   },
-  'click .eliminar'() {
-    Meteor.call('eliminarPromocion', this._id, (err) => {
+  'click .eliminar-codigo'(e,t) {
+    let id = $(e.currentTarget).data("id");
+    Meteor.call('eliminarPromocion', id, (err) => {
       if (err) {
         alert(err)
       } else {

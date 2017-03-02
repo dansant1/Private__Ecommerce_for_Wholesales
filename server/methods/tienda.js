@@ -166,8 +166,8 @@ Meteor.methods({
 
             Meteor.defer( () => {
                 Email.send({
-                  to: userEmail, //"danieldelgadilloh@gmail.com",
-                  from: 'dexcim@links.com.pe', //Meteor.users.find({_id: this.userId}).emails[0].address,
+                  to: [userEmail, "mariuscalmet@gmail.com"],
+                  from: 'dexcim@links.com.pe',
                   subject: "Pedido recibido",
                   html: `
                         <p><strong>${cliente.nombre}</strong></p>
@@ -190,8 +190,8 @@ Meteor.methods({
                 SSR.compileTemplate('htmlEmail', Assets.getText('emailFactura.html'));
 
                 Email.send({
-                  to: userEmail,
-                  from: 'dexcim@links.com.pe', //Meteor.users.find({_id: this.userId}).emails[0].address,
+                  to: [userEmail, "mariuscalmet@gmail.com"],
+                  from: 'dexcim@links.com.pe',
                   subject: "Factura DexCim",
                   html: SSR.render('htmlEmail', htlmData )
                 });
@@ -205,6 +205,7 @@ Meteor.methods({
 
     },
     eliminarPromocion(id) {
+      console.log( id );
       CodigosPromocionales.remove({_id: id})
     },
     actualizarCuenta: function (datos, id) {
