@@ -67,9 +67,7 @@
                           <p>{{this.descripcion}}</p>
                           <p>S/. {{this.precio}}</p>
                           <p>
-                            <div class="input-group">
                               <input type="number" style="width: 195px;" name="{{this._id}}" class="form-control input-number" value="1" min="1" max="100000">
-                            </div>
                           </p>
                           <p>
                             <button id="boton-c" style="width: 195px;" type="button" class="btn btn-primary btn-block agregar-carrito c">Agregar al carrito</button>
@@ -114,30 +112,28 @@
                                 <div class="row">
                                {{#if hayResultado this._id}}
                                <h3>{{this.nombre}}</h3>
-                                <div class="flexible" style="height: 445px;">
+                                <div class="flexible">
                                     {{#if searching}}
                                         {{> loading}}
                                     {{else}}
                                         {{#each productos this._id}}
-
                                             <div class="producto">
                                                 {{#each fotosproducto this._id}}
-                                                    <img src="{{this.url}}" alt="" class="fotoProducto d"/>
+                                                    <img src="{{this.url}}" alt="" class="fotoProducto d img-responsive"/>
                                                 {{/each}}
                                                 <p>{{nombre}}</p>
                                                 <p class="dest">{{descripcion}}</p>
                                                 <p>S/. {{precio}}</p>
                                                 <p>
-                                                <div class="input-group">
-                                                    <input type="number" style="width: 178px" name="{{this._id}}" class="form-control input-number" value="1" min="1" max="100000">
-                                                </div>
+                                                  <input type="number" style="width: 100%" name="{{this._id}}" class="form-control input-number" value="1" min="1" max="100000">
                                                 </p>
                                                 <p>
-                                                <button id="boton-c" style="background-color: {{color}}" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar al carrito</button>
+                                                <button id="boton-c" style="background-color: {{color}}" type="button" class="btn btn-primary btn-block agregar-carrito">Agregar</button>
                                                 </p>
                                             </div>
-
                                         {{/each}}
+																					<!-- <div class="producto"></div> -->
+																					<!-- <div class="producto"></div> -->
                                     {{/if}}
                                 </div>
                                 {{else}}
