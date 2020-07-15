@@ -1,0 +1,165 @@
+<template name="nav">
+ 
+  <div class="wrapper">
+    <nav class="navbar navbar-inverse custom__nav">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+    
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navigation">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a id="ver_chat" href="#">VER CHAT</a></li>
+                <li><a href="/sala-privada">Sala Privada</a></li>
+                {{#if currentUser}}
+                {{else}}
+                <li><a class="login_" href="#">Login</a></li>
+
+                {{/if}}
+                {{#if currentUser}}
+                <li><a>Balance: {{balance}}</a></li>
+                {{/if}}
+                {{#if loggingIn}}
+                <li><button type="button" class="btn btn-success navbar-btn btn-circle">Cargando...</button></li>
+
+                {{else}}
+                {{#if currentUser}}
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><button type="button" disabled class="btn btn-success navbar-btn btn-circle">ID: {{id}}</button>
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/vender"><button type="button" class="btn btn-success navbar-btn btn-circle">VENDER</button></a></li>
+                    <li><a style="color: white" href="/depositar">RECARGAR BALANCE</a></li>
+                    
+                    <li><a style="color: white" id="logout" href="#">LOGOUT</a></li>
+                  </ul>
+                </li>
+                {{else}}
+                <li><button type="button" id="login" class="btn btn-success navbar-btn btn-circle">Login with Steam</button></li>
+
+                {{/if}}
+                {{/if}}
+            </ul>
+        </div>
+      </div>
+    </nav>
+    
+    
+    {{> Template.dynamic template=page}}
+    
+  </div>
+ 
+  
+</template>
+
+<template name="index">
+<div class="flex-wrap">
+
+        <div class="chat-wrapper left-width">
+          
+          <div class="head-box" style="10vh"><h1>Chat</h1></div>
+          
+          <div class="messages-box">
+          {{#each mensajes}}
+            <div class="message-box">
+              <img src="/img/cs.jpg" alt="profile">
+              <p>{{user_id}} dice: {{mensaje}}</p>
+            </div>
+          {{/each}}  
+          </div>
+          
+          <div class="typing-box">
+            <input type="text" name="mensaje" placeholder="Escribe tu Mensaje" class="input__steam">
+            <button id="enviar" class="btn__steam"><i class="fa fa-paper-plane"></i></button>
+          </div>
+
+        </div>
+
+        <div class="container right-width" style="height: 90vh; padding-top: 0px">
+          <div class="row">
+            <div class="col-md-9">
+              <div class="box column">
+                <div class="head-box"><h1>SEARCH</h1></div>
+                <div class="options">
+                  <img name="cs" src="/img/cs.jpg" alt="cs1">
+                  <img name="cs2" src="/img/cs2.jpg" alt="cs2">
+                  <img name="cs3" src="/img/cs3.jpg" alt="cs3">
+                  <img name="cs4" src="/img/cs4.jpg" alt="cs4">
+                  <img name="cs5" src="/img/cs5.jpg" alt="cs5">
+                </div>
+                <div class="search-box">
+                  <input type="text" class="search" name="search_text"  placeholder="Buscar Por Nombre de Item">
+                  <button name="search" class="btn__search__steam"><i class="fa fa-search"></i></button>
+                </div>
+                <div class="categories">
+                  {{#each categories}}
+                  <input type="button" value="{{this}}" class="name_category">
+
+                  {{/each}}
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-3">
+              <div class="box column">
+                <div class="head-box"><h1>CART</h1></div>
+              
+                <div class="articles">
+                  {{#each carrito}}
+                    <div class="item-box" style="height: 155px; display: inline-block; width: 100px; flex: 1;">
+                      <h3>{{name}}</h3>
+                      <img src="{{url_image}}" alt="item">
+                    </div>
+                  {{/each}}
+                </div>
+
+                <div class="purschase__box">
+                  <p class="purschase">TOTAL: S/ {{total}}</p>
+                  {{#if currentUser}}
+                    {{#if hayBalance}}
+                    <button id="comprar" class="btn__purschase__steam">COMPRAR</button>
+                    {{else}}
+                    <button id="deposit" class="btn__purschase__steam">DEPOSITAR (S/)</button>
+                    {{/if}}
+                  {{else}}
+                     <button id="login" class="btn__purschase__steam">Login W/ Steam</button>
+                  {{/if}}
+                  
+                </div>    
+
+              </div>
+            </div>  
+           
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box left-alignement">
+              {{#if buscando}}
+                  <h1>Cargando...</h1>
+              {{else}}
+                {{#each items}}
+                <div class="item-box">
+                  <h3>{{name}}</h3>
+                  <img src="{{url_image}}" alt="item">
+                  <p>$ 45.00</p>
+                  <button id="add" class="btn__buy__steam"><i class="fa fa-shopping-cart"></i></button>
+                  <br>
+                  <img style="position: relative; right: 13px;" class="tag__item" src="/img/cs.jpg" alt="">
+                </div>
+                {{/each}}     
+              {{/if}}
+
+              </div>  
+            </div>
+          </div>
+        </div>
+
+    </div>
+</template>

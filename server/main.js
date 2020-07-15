@@ -1,23 +1,45 @@
 import { Meteor } from 'meteor/meteor';
 
 Meteor.startup(() => {
+	
+	ServiceConfiguration.configurations.upsert(
+	  { service: 'steam' },
+	  {
+		$set: {
+		  loginStyle: 'redirect',
+		  timeout: 10000
+		}
+	  }
+	);
 
-  process.env.MAIL_URL = "smtp://postmaster@grupoddv.com:faf68e2df2f77397baf3a38e8cd9f209@smtp.mailgun.org:587";
+	if ( Items.find().count() === 0 ) {
+		
+		let data = {
+			steamID: "76561199073124482",
+			items: [ {	assetid: "000011", 
+						url_image: "https://cs.deals/steamItems/MzQ3Njk=_2.png",
+						name: "DragonClaw Hook",
+						
+					}, {	
+						assetid: "000013", 
+						url_image: "https://cs.deals/steamItems/NzM5_2.png",
+						name: "Nitro Hook",
+						
+					}, {	
+						assetid: "000012", 
+						url_image: "https://cs.deals/steamItems/MTQw_2.png",
+						name: "ManCoo Suply",
+						
+					}]
+		}
 
-	/*var users = [
-      {email:"admin@gmail.com", roles:['admin']}
-    ];
+		Meteor.call("sell_item", data.steamID, data.items, function (error) {
+			if (error) {
+				console.log(error)
+			}
+		})
 
-	_.each(users, function (user) {
+	}
 
-  		var id;
-
-  		id = Accounts.createUser({
-    		email: user.email,
-    		password: "20dejunio"
-  		});
-
-    	Roles.addUsersToRoles(id, user.roles, 'fundador');
-
-	}); */
 });
+

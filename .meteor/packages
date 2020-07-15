@@ -24,8 +24,6 @@ twbs:bootstrap
 alanning:roles
 kadira:flow-router
 kadira:blaze-layout
-cfs:standard-packages
-cfs:gridfs
 peppelg:bootstrap-3-modal
 fortawesome:fontawesome
 richsilv:owl-carousel
@@ -35,8 +33,14 @@ patrickml:swal
 andruschka:jquery-zoom
 risul:bootstrap-colorpicker
 themeteorchef:bert
-okgrow:analytics
 email@1.1.18
 fourseven:scss
 meteorhacks:ssr
 seba:minifiers-autoprefixer
+maxpain:steam-tradeoffers@=1.2.3
+scholtzm:accounts-steam
+service-configuration
+check
+reactive-dict
+http
+simple:rest

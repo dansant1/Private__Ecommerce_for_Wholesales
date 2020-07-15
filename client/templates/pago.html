@@ -1,0 +1,17 @@
+<template name="pago">
+    <div class="payment-container" style="height: 400px">
+        <input type="number" id="monto" name="monto" placeholder="Monto a Depositar S/">
+        <input type="number" name="tarjeta" placeholder="Tarjeta de Credito">
+        
+        <input type="number" name="month" placeholder="Mes de Vencimiento">
+        <input type="number" name="year" placeholder="Año de Vencimiento">
+
+        <input type="number" name="cvv" placeholder="CVV">
+
+        <input type="email" name="email" placeholder="EMAIL">
+
+        <br>
+
+         <button id="deposit" class="btn__purschase__steam">DEPOSITAR (S/ {{monto}})</button>
+    </div>
+</template>

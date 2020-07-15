@@ -1,0 +1,71 @@
+<template name="vender">
+    <div class="flex-wrap">
+        <div class="container right-width" style="height: 90vh; padding-top: 0px">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="box left-alignement">
+                        <div class="head-box"><h1>ITEMS ELEGIDOS</h1></div>
+                        {{#each items_seleccionados}}
+                            <div class="item-box">
+                                <h3>{{name}}</h3>
+                                <img src="https://steamcommunity-a.akamaihd.net/economy/image/{{icon_url}}" alt="item">
+                                <p>S/ {{precio}}</p>
+                                <br>
+                            </div>
+                         {{else}}
+                            <h1 class="center-h1">Seleccione los items</h1>
+                        
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="box column">
+                        <div class="head-box"><h1>RESUMEN</h1></div>
+                        <div class="articles" style="width: 75%;
+    background: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 16px;
+    margin-button: 0">
+                            <p>ITEM A VENDER: {{items_vender}}</p>
+                        </div>
+                        <div class="purschase__box" style="    margin-top: 0px;
+    position: relative;
+    bottom: 60px;
+    width: 95%;">
+                            <p class="purschase" style="border-bottom-left-radius: 16px; border-bottom-right-radius: 16px">TOTAL: S/ {{total}}</p>
+                            {{#if currentUser}}
+                                <button id="vender" class="btn__purschase__steam">VENDER</button>
+                            {{/if}}
+                        </div>    
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box left-alignement">
+                        <div class="head-box"><h1>Selecciona los items de su inventario</h1></div>
+                        {{#each inventario}}
+                        <div class="item-box">
+                            <h3>{{name}}</h3>
+                            <img src="https://steamcommunity-a.akamaihd.net/economy/image/{{icon_url}}" alt="item">
+                            <p>S/ <input type="number" id="precio{{assetid}}" placeholder="Precio"></p>
+                            <button  class="upload btn__buy__steam"><i class="fa fa-upload"></i></button>
+                            <br>
+                            <img style="position: relative; right: 13px;" class="tag__item" src="{{category_url}}" alt="">
+                        </div>
+                        {{else}}
+                            
+                            <br>
+                            {{#if load_inventory}}
+                            <h3>Cargando...</h3>
+                            {{else}}
+                            <button style="border-radius: 0px; width: 200px;" class="load_inventory btn__buy__steam">CARGAR MI INVENTARIO</button>
+                            {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

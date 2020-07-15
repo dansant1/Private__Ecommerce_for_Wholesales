@@ -3,13 +3,8 @@
 	{
 			"env":
 				{
-        	"ROOT_URL": "http://dexcim.links.com.pe",
-					"MONGO_URL": "mongodb://admin:admin@ds141088.mlab.com:41088/integrate"
+        			"ROOT_URL": "http://trade-steam.meteorapp.com",
+					"MONGO_URL": "mongodb://admin:20dejunio@ds213079.mlab.com:13079/steam"
 				}
-	},
-	"public": {
-	    "analyticsSettings": {
-	    	"Mixpanel": { "token": "8b7ce0ebb20026655e869440b3c8e33b", "people": true }
-	    }
-  	}
+	}
 }
